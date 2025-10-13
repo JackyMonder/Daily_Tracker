@@ -7,8 +7,7 @@ class NotesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column (
+    return Column (
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ShaderMask(
@@ -22,12 +21,12 @@ class NotesSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
-                color: Colors.white, // This color will be masked by the shader
+                color: Colors.white, // This color will be masked by the shader (To MASK, the color must be white)
               )
             )
-          )
+          ),
+        CommonWidgets().searchBar,
         ],
-      )
     );
   }
 }

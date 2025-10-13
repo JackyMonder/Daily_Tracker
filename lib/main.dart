@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // Primary app export for compatibility with refactored lib/ layout
-import 'presentation/screens/home.dart';
+import 'presentation/screens/Home.dart';
 
 void main() {
   runApp(const MyExpensesApp());
