@@ -11,12 +11,19 @@ class NotesSection extends StatelessWidget {
       child: Column (
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "My Notes",
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.black
+          ShaderMask(
+            shaderCallback: (bounds) => LinearGradient(
+            colors: [Color.fromARGB(255, 255, 155, 243), Color.fromARGB(255, 65, 191, 250)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ).createShader(bounds),
+            child: Text(
+              "My Notes",
+              style: TextStyle(
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
+                color: Colors.white, // This color will be masked by the shader
+              )
             )
           )
         ],
