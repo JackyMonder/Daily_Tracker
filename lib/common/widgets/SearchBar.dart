@@ -15,6 +15,7 @@ class Searchbar extends StatelessWidget {
         end: Alignment.bottomRight,
       ).createShader(bounds),
         child: Container(
+          margin: EdgeInsets.symmetric(vertical: 10),
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),

@@ -1,32 +1,51 @@
 import 'package:flutter/material.dart';
 
-import 'package:expenses_app/common/widgets/index.dart';
+class Notesection extends StatelessWidget {
+  final String noteTitle;
+  final String noteContent;
+  Function(bool?)? onChanged; // This element gonna be used latter (SAVE CHANGED METHOD)
 
-class NotesSection extends StatelessWidget {
-  const NotesSection({super.key});
+  Notesection ({
+    super.key, 
+    required this.noteTitle, 
+    required this.noteContent
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ShaderMask(
-            shaderCallback: (bounds) => LinearGradient(
-            colors: [Color.fromARGB(255, 255, 155, 243), Color.fromARGB(255, 65, 191, 250)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ).createShader(bounds),
-            child: Text(
-              "My Notes",
-              style: TextStyle(
-                fontSize: 36,
-                fontWeight: FontWeight.bold,
-                color: Colors.white, // This color will be masked by the shader (To MASK, the color must be white)
-              )
-            )
-          ),
-        CommonWidgets().searchBar,
-        ],
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              noteTitle,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  noteContent,
+                  style: const TextStyle(fontSize: 14),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
