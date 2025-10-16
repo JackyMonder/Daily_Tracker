@@ -9,17 +9,17 @@ class Searchbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: ShaderMask(shaderCallback: (bounds) => LinearGradient(
-        colors: [Color.fromARGB(255, 255, 155, 243),
-          Color.fromARGB(255, 65, 191, 250)],
+        colors: [Color(0xFFF09AA2),
+          Color(0xFF6BB6DF)],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ).createShader(bounds),
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
+          margin: EdgeInsets.symmetric(vertical: 8),
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-            border: BoxBorder.all(
+            border: Border.all(
               color: Colors.white,
               width: 1,
             ),
@@ -28,7 +28,7 @@ class Searchbar extends StatelessWidget {
             Icon(
               Icons.search,
               color: Colors.white,
-              size: 36,
+              size: 28,
             ),
             Expanded(
               child: TextField(
