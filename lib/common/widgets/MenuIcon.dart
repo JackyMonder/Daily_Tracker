@@ -9,7 +9,7 @@ class MenuIconButton extends StatelessWidget {
       width: 50,
       height: 50,
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 255, 155, 243),
+        color: const Color(0xFFF09AA2),
         shape: BoxShape.circle,
       ),
       child: IconButton(

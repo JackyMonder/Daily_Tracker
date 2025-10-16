@@ -67,12 +67,10 @@ class Notecards extends StatefulWidget {
           ),
           itemCount: _cardData.length,
           itemBuilder: (context, index) {
-            // final noteTile = _cardData[index]['title'] ?? 'Untitle';
-            // final noteContent = _cardData[index]['content'] ?? 'No Content';
             return Notesection(
               noteTitle: (_cardData[index]['title'] as String?) ?? 'Untitled',
               noteContent: (_cardData[index]['content'] as String?) ?? 'No Content',
-              // color: _cardData[index]['color'] as Color,
+              // color: _cardData[index]['color'] as Color ?? ,
             );
           },
         ),

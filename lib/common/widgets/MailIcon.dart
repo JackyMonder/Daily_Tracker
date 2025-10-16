@@ -9,7 +9,7 @@ class MailIconButton extends StatelessWidget {
       width: 50,
       height: 50,
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 65, 191, 250),
+        color: const Color(0xFF6BB6DF),
         shape: BoxShape.circle,
       ),
       child: IconButton(

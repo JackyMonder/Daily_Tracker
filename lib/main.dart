@@ -4,6 +4,7 @@ import 'presentation/screens/home.dart';
 import 'presentation/screens/login.dart';
 import 'presentation/screens/signup.dart';
 import 'presentation/screens/auth_intro.dart';
+import 'presentation/screens/note_editor.dart';
 import 'core/routes/routes.dart';
 
 void main() {
@@ -23,6 +24,7 @@ class MyExpensesApp extends StatelessWidget {
         Routes.login: (_) => const LoginScreen(),
         Routes.signup: (_) => const SignUpScreen(),
         Routes.authIntro: (_) => const AuthIntroScreen(),
+        Routes.noteEditor: (context) => const NoteEditorScreen(),
       },
     );
   }
