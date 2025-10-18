@@ -33,7 +33,7 @@ class Notesection extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         elevation: 3,
-        shadowColor: Colors.black.withOpacity(0.08),
+        shadowColor: Colors.black.withValues(alpha: 0.08),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
