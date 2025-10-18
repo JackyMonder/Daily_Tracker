@@ -6,8 +6,9 @@ import 'package:image_picker/image_picker.dart';
 class NoteEditorScreen extends StatefulWidget {
   final String? initialTitle;
   final List<Map<String, String>>? initialBlocks;
+  final String? heroTag;
 
-  const NoteEditorScreen({super.key, this.initialTitle, this.initialBlocks});
+  const NoteEditorScreen({super.key, this.initialTitle, this.initialBlocks, this.heroTag});
 
   @override
   State<NoteEditorScreen> createState() => _NoteEditorScreenState();
@@ -16,6 +17,7 @@ class NoteEditorScreen extends StatefulWidget {
 class _NoteEditorScreenState extends State<NoteEditorScreen> {
   late final TextEditingController _titleController;
   List<Map<String, String>> _blocks = [];
+  bool _checkMode = false;
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -38,8 +40,25 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   }
 
   void _saveAndPop() {
+    final title = _titleController.text.trim();
+    final hasContent = _blocks.any((b) {
+      if (b['type'] == 'text') return (b['data'] ?? '').trim().isNotEmpty;
+      if (b['type'] == 'image') return (b['data'] ?? '').isNotEmpty;
+      return false;
+    });
+    if (title.isEmpty && !hasContent) {
+      showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Cannot create empty note'),
+          content: const Text('Please add a title, text, or image before saving.'),
+          actions: [TextButton(onPressed: () => Navigator.of(ctx).pop(), child: const Text('OK'))],
+        ),
+      );
+      return;
+    }
     Navigator.of(context).pop({
-      'title': _titleController.text.trim(),
+      'title': title,
       'blocks': _blocks,
     });
   }
@@ -65,7 +84,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.white,
         title: const Text(
-          'Edit Note',
+          'Your Note',
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
         actions: [
@@ -99,6 +118,33 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // If the first block is an image, show it at top in the editor; wrap with Hero only when a heroTag is provided.
+            if (_blocks.isNotEmpty && _blocks.first['type'] == 'image') ...[
+              if (widget.heroTag != null)
+                Hero(
+                  tag: widget.heroTag!,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.file(
+                      File(_blocks.first['data'] ?? ''),
+                      width: double.infinity,
+                      height: 220,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                )
+              else
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.file(
+                    File(_blocks.first['data'] ?? ''),
+                    width: double.infinity,
+                    height: 220,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              const SizedBox(height: 12),
+            ],
             TextField(
               controller: _titleController,
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
@@ -121,6 +167,13 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                   onPressed: () => _pickImage(ImageSource.gallery),
                   icon: const Icon(Icons.photo),
                   label: const Text('Image'),
+                ),
+                const SizedBox(width: 8),
+                // Checklist toggle
+                IconButton(
+                  onPressed: () => setState(() => _checkMode = !_checkMode),
+                  icon: Icon(_checkMode ? Icons.check_box : Icons.check_box_outline_blank),
+                  tooltip: 'Toggle checklist',
                 ),
               ],
             ),
@@ -153,11 +206,40 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                     );
                   }
                   // text block
+                  final checked = (block['checked'] ?? 'false') == 'true';
                   return ListTile(
                     key: ValueKey('txt_$idx'),
-                    title: _TextBlockField(
-                      initial: block['data'] ?? '',
-                      onChanged: (v) => block['data'] = v,
+                    title: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (_checkMode) ...[
+                          Checkbox(
+                            value: checked,
+                            onChanged: (v) => setState(() => block['checked'] = (v == true) ? 'true' : 'false'),
+                          ),
+                        ],
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              gradient: checked
+                                  ? const LinearGradient(
+                                      // lighter tint of original gradient
+                                      colors: [Color(0xFFF6C9CE), Color(0xFFD9EEF6)],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    )
+                                  : null,
+                              color: checked ? null : Colors.transparent,
+                            ),
+                            child: _TextBlockField(
+                              initial: block['data'] ?? '',
+                              onChanged: (v) => block['data'] = v,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete_outline),

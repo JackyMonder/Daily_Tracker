@@ -17,15 +17,22 @@ class NewNote extends StatelessWidget {
               settings: const RouteSettings(name: Routes.noteEditor),
             ),
           );
-          if (result != null) {
+          if (result != null && result.containsKey('blocks')) {
             final title = (result['title'] as String?)?.trim() ?? '';
             final blocks = (result['blocks'] as List<dynamic>?)
                 ?.map((e) => Map<String, String>.from(e as Map))
                 .toList() ??
-                [
-                  {'type': 'text', 'data': ''}
-                ];
-            NoteStore.instance.addNote({'title': title, 'blocks': blocks});
+                [];
+            final hasContent = title.isNotEmpty || blocks.any((b) {
+              if (b['type'] == 'text') return (b['data'] ?? '').trim().isNotEmpty;
+              if (b['type'] == 'image') return (b['data'] ?? '').isNotEmpty;
+              return false;
+            });
+            if (hasContent) {
+              NoteStore.instance.addNote({'title': title, 'blocks': blocks});
+            } else {
+              // do nothing; editor already prevented empty save normally
+            }
           }
         }();
       },
