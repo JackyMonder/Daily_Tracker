@@ -4,7 +4,6 @@ import 'package:expenses_app/common/widgets/MenuIcon.dart';
 import 'package:expenses_app/common/widgets/SettingIcon.dart';
 import 'package:expenses_app/common/widgets/SearchBar.dart';
 import 'package:expenses_app/common/widgets/NoteCards.dart';
-import 'package:expenses_app/common/widgets/SidebarDrawer.dart';
 import 'NewNote.dart';
 import 'social_login_buttons.dart';
 class CommonWidgets {

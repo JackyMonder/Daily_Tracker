@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../state/signup_state.dart';
 import '../../common/widgets/rounded_field.dart';
 import '../../common/widgets/gradient_button.dart';
