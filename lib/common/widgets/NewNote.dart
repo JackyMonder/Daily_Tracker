@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:expenses_app/core/routes/routes.dart';
 import 'package:expenses_app/presentation/screens/note_editor.dart';
+import 'package:expenses_app/data/note_store.dart';
 
 class NewNote extends StatelessWidget {
   const NewNote({super.key});
@@ -9,12 +10,24 @@ class NewNote extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => const NoteEditorScreen(),
-            settings: const RouteSettings(name: Routes.noteEditor),
-          ),
-        );
+        () async {
+          final result = await Navigator.of(context).push<Map<String, dynamic>>(
+            MaterialPageRoute(
+              builder: (_) => const NoteEditorScreen(),
+              settings: const RouteSettings(name: Routes.noteEditor),
+            ),
+          );
+          if (result != null) {
+            final title = (result['title'] as String?)?.trim() ?? '';
+            final blocks = (result['blocks'] as List<dynamic>?)
+                ?.map((e) => Map<String, String>.from(e as Map))
+                .toList() ??
+                [
+                  {'type': 'text', 'data': ''}
+                ];
+            NoteStore.instance.addNote({'title': title, 'blocks': blocks});
+          }
+        }();
       },
       child: SizedBox(
         width: 55,
