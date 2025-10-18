@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:expenses_app/common/widgets/index.dart';
 import 'package:expenses_app/common/widgets/NoteCards.dart';
+import 'package:expenses_app/common/widgets/SidebarDrawer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,6 +12,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      drawer: const SidebarDrawer(), // Thêm drawer vào Scaffold
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
