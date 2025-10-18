@@ -5,12 +5,15 @@ class AuthIntroScreen extends StatelessWidget {
   const AuthIntroScreen({super.key});
 
   static const routeName = '/auth-intro';
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      body: SafeArea(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage('assets/images/Background_01.png'), fit: BoxFit.cover),
+        ),
+        child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: Center(
@@ -126,7 +129,7 @@ class AuthIntroScreen extends StatelessWidget {
                     ],
                   ),
                   TextButton(
-                    onPressed: () => Navigator.of(context).pushNamed('/'),
+                    onPressed: () => Navigator.of(context).pushNamed(''),
                     child: Text('Continue as a guest', style: theme.textTheme.bodyMedium?.copyWith(color: const Color(0xFFD55C6A))),
                   ),
                   const Spacer(),
@@ -143,7 +146,7 @@ class AuthIntroScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }
 

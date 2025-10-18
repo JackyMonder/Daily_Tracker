@@ -70,7 +70,7 @@ class Notesection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Expanded(
+              Flexible(
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -78,6 +78,7 @@ class Notesection extends StatelessWidget {
                     style: const TextStyle(fontSize: 14, height: 1.3),
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
+                    softWrap: true,
                   ),
                 ),
               ),

@@ -11,14 +11,14 @@ class FacebookCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 48,
-      height: 48,
+      width: 36,
+      height: 36,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: const Color(0xFF039BE5),
       ),
       child: Center(
-        child: SvgPicture.string(_fSvg, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), width: 32, height: 32),
+        child: SvgPicture.string(_fSvg, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), width: 24, height: 24),
       ),
     );
   }
@@ -27,27 +27,21 @@ class FacebookCircle extends StatelessWidget {
 class GoogleCircle extends StatelessWidget {
   const GoogleCircle({super.key});
 
-  static const String _gSvg =
-      '<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">'
-      '<path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303C33.932 31.91 29.393 35 24 35c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C33.584 5.053 28.971 3 24 3 12.954 3 4 11.954 4 23s8.954 20 20 20 19-8.954 19-20c0-1.341-.138-2.653-.389-3.917z"/>'
-      '<path fill="#FF3D00" d="M6.306 14.691l6.571 4.814C14.464 16.103 18.86 13 24 13c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C33.584 5.053 28.971 3 24 3 16.318 3 9.656 7.337 6.306 14.691z"/>'
-      '<path fill="#4CAF50" d="M24 43c5.313 0 10.155-2.037 13.79-5.351l-6.363-5.375C29.402 33.447 26.895 34 24 34c-5.37 0-9.897-3.053-12.072-7.497l-6.56 5.05C8.681 38.556 15.814 43 24 43z"/>'
-      '<path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-1.087 3.109-3.293 5.558-6.074 7.017l.001-.001 6.363 5.375C33.117 41.346 38 38 40.95 33.05 42.262 30.773 43 27.995 43 24c0-1.341-.138-2.653-.389-3.917z"/>'
+  static const String _gSvg = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">'
+      '<path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>'
       '</svg>';
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = theme.colorScheme;
     return Container(
       width: 48,
       height: 48,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: color.outlineVariant),
-        color: theme.colorScheme.surface,
       ),
-      child: Center(child: SvgPicture.string(_gSvg, width: 48, height: 48)),
+      child: Center(
+        child: SvgPicture.string(_gSvg, width: 56, height: 56)
+      ),
     );
   }
 }
@@ -66,10 +60,9 @@ class AppleCircle extends StatelessWidget {
       height: 48,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.black,
       ),
       child: Center(
-        child: SvgPicture.string(_aSvg, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), width: 22, height: 22),
+        child: SvgPicture.string(_aSvg, width: 22, height: 22),
       ),
     );
   }
@@ -89,10 +82,9 @@ class TwitterCircle extends StatelessWidget {
       height: 48,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.black,
       ),
       child: Center(
-        child: SvgPicture.string(_tSvg, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), width: 22, height: 22),
+        child: SvgPicture.string(_tSvg, width: 22, height: 22),
       ),
     );
   }

@@ -28,7 +28,8 @@ class _NotecardsState extends State<Notecards> {
               crossAxisCount: 2,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
-              childAspectRatio: 0.9,
+              // make tiles slightly taller to give text area more room
+              childAspectRatio: 0.85,
             ),
             itemCount: notes.length,
             itemBuilder: (context, index) {
@@ -66,8 +67,8 @@ class _NotecardsState extends State<Notecards> {
                       }
                     }
                   },
-                  child: Material(
-                    color: Colors.white,
+                    child: Material(
+                    color: Colors.transparent,
                     elevation: 2,
                     borderRadius: BorderRadius.circular(14),
                     shadowColor: Colors.black.withOpacity(0.08),
@@ -77,23 +78,18 @@ class _NotecardsState extends State<Notecards> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(14),
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFF09AA2), Color(0xFF6BB6DF)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
                         ),
                         padding: const EdgeInsets.all(12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // thumbnail removed on Home (images only shown in detail). show neutral box
-                            Container(
-                              height: 110,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade50,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: Icon(Icons.note, color: Colors.grey.shade300, size: 36),
-                              ),
-                            ),
+                            // no thumbnail on Home; keep a small spacer for visual rhythm
+                            const SizedBox(height: 8),
                             const SizedBox(height: 10),
                             Text(
                               data['title'] as String? ?? 'Untitled',
@@ -102,12 +98,13 @@ class _NotecardsState extends State<Notecards> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 6),
-                            Expanded(
+                            Flexible(
                               child: Text(
                                 excerpt,
-                                style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                                style: TextStyle(fontSize: 13, color: Colors.black87),
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
+                                softWrap: true,
                               ),
                             ),
                           ],
