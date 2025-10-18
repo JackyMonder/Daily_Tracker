@@ -5,4 +5,5 @@ class Routes {
   static const signup = '/signup';
   static const authIntro = '/auth-intro';
   static const noteEditor = '/note-editor';
+  static const settings = '/settings';
 }

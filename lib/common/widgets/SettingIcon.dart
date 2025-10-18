@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:expenses_app/core/routes/routes.dart';
 
 class SettingIconButton extends StatelessWidget {
   const SettingIconButton({super.key});
@@ -15,7 +16,7 @@ class SettingIconButton extends StatelessWidget {
       child: IconButton(
         icon: Icon(Icons.settings, color: Colors.white, size: 30),
         onPressed: () {
-          // Handle mail button press
+          Navigator.pushNamed(context, Routes.settings);
         },
       ),
     );
