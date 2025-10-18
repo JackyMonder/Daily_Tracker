@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import '../../common/widgets/index.dart';
 class AuthIntroScreen extends StatelessWidget {
   const AuthIntroScreen({super.key});
 
@@ -63,7 +62,7 @@ class AuthIntroScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   _BrandFullButton(
-                    icon: const _FacebookCircle(),
+                    icon: CommonWidgets().facebookCircle,
                     label: 'Continue with Facebook',
                     onPressed: () {},
                   ),
@@ -75,13 +74,13 @@ class AuthIntroScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   _BrandFullButton(
-                    icon: const _BrandCircle(icon: FontAwesomeIcons.apple, color: Colors.black),
+                    icon: CommonWidgets().appleCircle,
                     label: 'Continue with Apple',
                     onPressed: () {},
                   ),
                   const SizedBox(height: 12),
                   _BrandFullButton(
-                    icon: const _BrandCircle(icon: FontAwesomeIcons.xTwitter, color: Colors.black),
+                    icon: CommonWidgets().twitterCircle,
                     label: 'Continue with X',
                     onPressed: () {},
                   ),
@@ -125,6 +124,10 @@ class AuthIntroScreen extends StatelessWidget {
                         child: Text('Sign up', style: theme.textTheme.bodyMedium?.copyWith(color: const Color(0xFFD55C6A))),
                       ),
                     ],
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pushNamed('/'),
+                    child: Text('Continue as a guest', style: theme.textTheme.bodyMedium?.copyWith(color: const Color(0xFFD55C6A))),
                   ),
                   const Spacer(),
                   Row(
@@ -176,33 +179,33 @@ class _BrandFullButton extends StatelessWidget {
   }
 }
 
-class _BrandCircle extends StatelessWidget {
-  const _BrandCircle({required this.icon, required this.color});
-  final IconData icon;
-  final Color color;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 24,
-      height: 24,
-      decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.transparent),
-      child: Center(child: FaIcon(icon, size: 20, color: color)),
-    );
-  }
-}
+// class _BrandCircle extends StatelessWidget {
+//   const _BrandCircle({required this.icon, required this.color});
+//   final IconData icon;
+//   final Color color;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: 24,
+//       height: 24,
+//       decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.transparent),
+//       child: Center(child: FaIcon(icon, size: 20, color: color)),
+//     );
+//   }
+// }
 
-class _FacebookCircle extends StatelessWidget {
-  const _FacebookCircle();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 24,
-      height: 24,
-      decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0xFF1877F2)),
-      child: const Center(child: FaIcon(FontAwesomeIcons.facebookF, size: 14, color: Colors.white)),
-    );
-  }
-}
+// class _FacebookCircle extends StatelessWidget {
+//   const _FacebookCircle();
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: 24,
+//       height: 24,
+//       decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0xFF1877F2)),
+//       child: const Center(child: FaIcon(FontAwesomeIcons.facebookF, size: 14, color: Colors.white)),
+//     );
+//   }
+// }
 
 class _GoogleCircle extends StatelessWidget {
   const _GoogleCircle();
