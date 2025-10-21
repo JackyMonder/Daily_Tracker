@@ -11,14 +11,14 @@ class FacebookCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 48,
-      height: 48,
+      width: 36,
+      height: 36,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: const Color(0xFF039BE5),
       ),
       child: Center(
-        child: SvgPicture.string(_fSvg, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), width: 32, height: 32),
+        child: SvgPicture.string(_fSvg, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), width: 24, height: 24),
       ),
     );
   }
@@ -37,17 +37,13 @@ class GoogleCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = theme.colorScheme;
     return Container(
       width: 48,
       height: 48,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: color.outlineVariant),
-        color: theme.colorScheme.surface,
       ),
-      child: Center(child: SvgPicture.string(_gSvg, width: 48, height: 48)),
+      child: Center(child: SvgPicture.string(_gSvg, width: 36, height: 36)),
     );
   }
 }
@@ -66,10 +62,9 @@ class AppleCircle extends StatelessWidget {
       height: 48,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.black,
       ),
       child: Center(
-        child: SvgPicture.string(_aSvg, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), width: 22, height: 22),
+        child: SvgPicture.string(_aSvg, width: 22, height: 22),
       ),
     );
   }
@@ -89,10 +84,9 @@ class TwitterCircle extends StatelessWidget {
       height: 48,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.black,
       ),
       child: Center(
-        child: SvgPicture.string(_tSvg, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), width: 22, height: 22),
+        child: SvgPicture.string(_tSvg, width: 22, height: 22),
       ),
     );
   }
