@@ -1,5 +1,5 @@
 
-# Expenses App
+# Daily-Tracker App
 
 A cross-platform Flutter application for managing and viewing expenses, with a modular structure for easy extension.
 
