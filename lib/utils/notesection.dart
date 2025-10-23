@@ -4,7 +4,7 @@ import 'package:expenses_app/presentation/screens/note_editor.dart';
 class Notesection extends StatelessWidget {
   final String noteTitle;
   final String noteContent;
-  Function(bool?)? onChanged; // This element gonna be used latter (SAVE CHANGED METHOD)
+  // Function(bool?)? onChanged; // This element gonna be used latter (SAVE CHANGED METHOD)
 
   Notesection ({
     super.key, 
@@ -48,15 +48,13 @@ class Notesection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    noteContent,
-                    style: const TextStyle(fontSize: 14, height: 1.3),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  noteContent,
+                  style: const TextStyle(fontSize: 14, height: 1.3),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],

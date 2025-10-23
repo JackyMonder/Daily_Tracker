@@ -11,10 +11,10 @@ class AuthIntroScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       body: Container(
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(image: AssetImage('assets/images/mainBg.png'), 
-        //   fit: BoxFit.cover),
-        // ),
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage('assets/images/mainBg.png'), 
+          fit: BoxFit.cover),
+        ),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -28,18 +28,25 @@ class AuthIntroScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.center,
                       child: Container(
-                        width: 72,
-                        height: 72,
+                        width: 80,
+                        height: 80,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(20),
                           gradient: const LinearGradient(
                             colors: [Color(0xFFF09AA2), Color(0xFF6BB6DF)],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFFF09AA2).withOpacity(0.3),
+                              blurRadius: 15,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
                         ),
                         child: const Center(
-                          child: Icon(Icons.note_alt_outlined, color: Colors.white, size: 36),
+                          child: Icon(Icons.note_alt_outlined, color: Colors.white, size: 40),
                         ),
                       ),
                     ),
@@ -90,29 +97,45 @@ class AuthIntroScreen extends StatelessWidget {
                       onPressed: () {},
                     ),
                     const SizedBox(height: 24),
-                    SizedBox(
-                      height: 52,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(28),
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFFF09AA2), Color(0xFF6BB6DF)],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ),
+                    Row(
+                      children: [
+                        Expanded(child: Divider(color: Colors.grey.shade300)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text('Or', style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
                         ),
-                        child: Material(
-                          type: MaterialType.transparency,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(28),
-                            onTap: () => Navigator.of(context).pushNamed('/login'),
-                            child: Center(
-                              child: Text(
-                                'Sign in with password',
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        Expanded(child: Divider(color: Colors.grey.shade300)),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      height: 52,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28),
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFF09AA2), Color(0xFF6BB6DF)],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFF09AA2).withOpacity(0.3),
+                            blurRadius: 15,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(28),
+                          onTap: () => Navigator.of(context).pushNamed('/login'),
+                          child: Center(
+                            child: Text(
+                              'Sign in with password',
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -161,12 +184,23 @@ class _BrandFullButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // final color = theme.colorScheme;
-    return SizedBox(
+    return Container(
       height: 52,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: const Color.fromARGB(255, 181, 181, 181)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          backgroundColor: theme.colorScheme.surface,
+          backgroundColor: Colors.white,
           side: BorderSide(color: Colors.white),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
           padding: const EdgeInsets.symmetric(horizontal: 16),

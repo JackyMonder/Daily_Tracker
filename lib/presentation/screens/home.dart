@@ -1,12 +1,34 @@
 // Presentation home exports
+import 'package:expenses_app/common/widgets/HorizontalWeekView.dart';
 import 'package:flutter/material.dart';
 
 import 'package:expenses_app/common/widgets/index.dart';
 import 'package:expenses_app/common/widgets/NoteCards.dart';
 import 'package:expenses_app/common/widgets/SidebarDrawer.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  DateTime _selectedDate = DateTime.now();
+  
+  // Sample data for notes dates - trong thực tế sẽ lấy từ database
+  final List<DateTime> _notesDates = [
+    DateTime.now(),
+    DateTime.now().subtract(const Duration(days: 1)),
+    DateTime.now().subtract(const Duration(days: 3)),
+    DateTime.now().add(const Duration(days: 2)),
+  ];
+
+  void _onDateSelected(DateTime date) {
+    setState(() {
+      _selectedDate = date;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +74,26 @@ class HomeScreen extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ).createShader(bounds),
-                child: Text(
-                  "My Notes",
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white, // This color will be masked by the shader (To MASK, the color must be white)
-                  )
-                )
+                // child: Text(
+                //   "My Notes",
+                //   style: TextStyle(
+                //     fontSize: 36,
+                //     fontWeight: FontWeight.bold,
+                //     color: Colors.white, // This color will be masked by the shader (To MASK, the color must be white)
+                //   )
+                // )
             ),
-            CommonWidgets().searchBar,
+            const SizedBox(height: 16),
+            // Horizontal Week View
+            HorizontalWeekView(
+              selectedDate: _selectedDate,
+              onDateSelected: _onDateSelected,
+              notesDates: _notesDates,
+            ),
+            const SizedBox(height: 20),
+            // CommonWidgets().searchBar,
             Expanded(
-              child: Notecards(),
+              child: Notecards(selectedDate: _selectedDate),
             ),
           ],
         ),

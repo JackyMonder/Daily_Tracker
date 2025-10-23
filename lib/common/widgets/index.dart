@@ -5,6 +5,7 @@ import 'package:expenses_app/common/widgets/SettingIcon.dart';
 import 'package:expenses_app/common/widgets/SearchBar.dart';
 import 'package:expenses_app/common/widgets/NoteCards.dart';
 import 'package:expenses_app/common/widgets/SidebarDrawer.dart';
+import 'package:expenses_app/common/widgets/HorizontalWeekView.dart';
 import 'NewNote.dart';
 import 'social_login_buttons.dart';
 class CommonWidgets {
@@ -13,10 +14,11 @@ class CommonWidgets {
   MailIconButton get mailIconButton => MailIconButton();
   SettingIconButton get settingIconButton => SettingIconButton();
   NewNote get newNote => NewNote();
-  Searchbar get searchBar => Searchbar();
+  // Searchbar get searchBar => Searchbar();
   Notecards get noteCards => Notecards();
   AppleCircle get appleCircle => AppleCircle();
   TwitterCircle get twitterCircle => TwitterCircle();
   GoogleCircle get googleCircle => GoogleCircle();
   FacebookCircle get facebookCircle => FacebookCircle();
+  HorizontalWeekView get horizontalWeekView => HorizontalWeekView();
 }
