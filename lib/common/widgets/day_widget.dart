@@ -22,7 +22,7 @@ class DayWidget extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 4),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.grey[100],
+          color: isSelected ? const Color(0xFF6BB6DF) : Colors.grey[100],
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(

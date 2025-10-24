@@ -1,4 +1,6 @@
 /// Utility functions cho date manipulation trong WeekView
+import '../widgets/NoteCards.dart';
+
 class DateUtils {
   /// Lấy ngày đầu tuần (thứ 2)
   static DateTime getWeekStart(DateTime date) {
@@ -26,6 +28,24 @@ class DateUtils {
     return date1.day == date2.day &&
            date1.month == date2.month &&
            date1.year == date2.year;
+  }
+
+  /// Lấy danh sách các ngày trong tuần có notes
+  static List<DateTime> getWeekDatesWithNotes(DateTime selectedDate) {
+    final List<DateTime> weekDates = [];
+    final DateTime startOfWeek = selectedDate.subtract(Duration(days: selectedDate.weekday - 1));
+    
+    for (int i = 0; i < 7; i++) {
+      final DateTime date = startOfWeek.add(Duration(days: i));
+      final notecards = Notecards(selectedDate: date);
+      final filteredData = notecards.filteredCardData;
+      
+      if (filteredData.isNotEmpty) {
+        weekDates.add(date);
+      }
+    }
+    
+    return weekDates;
   }
 
   /// Lấy tên ngày trong tuần

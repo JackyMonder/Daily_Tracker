@@ -1,2 +1,2 @@
 // Placeholder constants file
-const String appName = 'Expenses App';
+const String appName = 'Daily-Tracker App';

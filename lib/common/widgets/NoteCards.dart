@@ -4,15 +4,12 @@ import 'package:flutter/material.dart';
 
 import '../../utils/notesection.dart';
 
-class Notecards extends StatefulWidget {
-  final DateTime? selectedDate;
-  
-  const Notecards({super.key, this.selectedDate});
 
-  @override
-  State<Notecards> createState() => _NotecardsState();
-}
-  class _NotecardsState extends State<Notecards> {
+class Notecards extends StatelessWidget {
+  final DateTime? selectedDate;
+
+  Notecards({super.key, this.selectedDate});
+
     // Sample data for cards with creation dates
     final List<Map<String, dynamic>> _allCardData = [
     {
@@ -52,20 +49,20 @@ class Notecards extends StatefulWidget {
     },
   ];
 
-  List<Map<String, dynamic>> get _filteredCardData {
-    if (widget.selectedDate == null) return _allCardData;
+  List<Map<String, dynamic>> get filteredCardData {
+    if (selectedDate == null) return _allCardData;
     
     return _allCardData.where((card) {
       DateTime createdAt = card['createdAt'] as DateTime;
-      return createdAt.year == widget.selectedDate!.year &&
-             createdAt.month == widget.selectedDate!.month &&
-             createdAt.day == widget.selectedDate!.day;
+      return createdAt.year == selectedDate!.year &&
+             createdAt.month == selectedDate!.month &&
+             createdAt.day == selectedDate!.day;
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final filteredData = _filteredCardData;
+    final filteredData = filteredCardData;
     return SafeArea(
         child: filteredData.isEmpty
         ? Center(
@@ -79,8 +76,8 @@ class Notecards extends StatefulWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                widget.selectedDate != null 
-                    ? "No notes for ${_formatDate(widget.selectedDate!)}"
+                selectedDate != null 
+                    ? "No notes for ${_formatDate(selectedDate!)}"
                     : "No Notes Available",
                 style: TextStyle(
                   fontSize: 16,
@@ -92,6 +89,8 @@ class Notecards extends StatefulWidget {
           ),
         ) 
         : ListView.builder(
+          shrinkWrap: true, // Cho phép ListView tự điều chỉnh kích thước
+          physics: NeverScrollableScrollPhysics(), // Tắt scroll để tránh conflict với parent scroll
           scrollDirection: Axis.vertical,
           padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
           itemCount: filteredData.length,

@@ -7,9 +7,11 @@
  */
 
 import 'package:flutter/material.dart';
+
 import '../models/week_view_models.dart';
 import '../controllers/week_view_controller.dart';
 import 'week_view_components.dart';
+import 'notes_on_date.dart';
 
 class HorizontalWeekView extends StatefulWidget {
   final DateTime? selectedDate;
@@ -63,11 +65,9 @@ class _HorizontalWeekViewState extends State<HorizontalWeekView>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         WeekViewHeader(currentDate: _state.currentDaySelected),
-        
         SizedBox(height: 16),
-        
         SizedBox(
-          height: 100, // Đặt chiều cao cố định cho PageView
+          height: 100,
           child: PageView.builder(
             controller: _controller.pageController,
             onPageChanged: (page) => _controller.onPageChanged(page, _onStateChanged),
@@ -80,6 +80,10 @@ class _HorizontalWeekViewState extends State<HorizontalWeekView>
               );
             },
           ),
+        ),
+        SizedBox(height: 20),
+        Expanded(
+          child: NotesOnDate(date: _state.currentDaySelected),
         ),
       ],
     );

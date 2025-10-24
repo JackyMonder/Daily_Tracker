@@ -3,7 +3,6 @@ import 'package:expenses_app/common/widgets/HorizontalWeekView.dart';
 import 'package:flutter/material.dart';
 
 import 'package:expenses_app/common/widgets/index.dart';
-import 'package:expenses_app/common/widgets/NoteCards.dart';
 import 'package:expenses_app/common/widgets/SidebarDrawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -68,39 +67,18 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ShaderMask(
-              shaderCallback: (bounds) => LinearGradient(
-              colors: [Color(0xFFF09AA2), Color(0xFF6BB6DF)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ).createShader(bounds),
-                // child: Text(
-                //   "My Notes",
-                //   style: TextStyle(
-                //     fontSize: 36,
-                //     fontWeight: FontWeight.bold,
-                //     color: Colors.white, // This color will be masked by the shader (To MASK, the color must be white)
-                //   )
-                // )
-            ),
             const SizedBox(height: 16),
-            // Horizontal Week View
-            HorizontalWeekView(
-              selectedDate: _selectedDate,
-              onDateSelected: _onDateSelected,
-              notesDates: _notesDates,
-            ),
-            const SizedBox(height: 20),
-            // CommonWidgets().searchBar,
             Expanded(
-              child: Notecards(selectedDate: _selectedDate),
+              child: HorizontalWeekView(
+                selectedDate: _selectedDate,
+                onDateSelected: _onDateSelected,
+                notesDates: _notesDates,
+              ),
             ),
           ],
         ),
       ),
       floatingActionButton: CommonWidgets().newNote,
-      
-        
-      );
+    );
   }
 }
