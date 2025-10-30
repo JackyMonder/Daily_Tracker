@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-// Primary app export for compatibility with refactored lib/ layout
 import 'presentation/screens/home.dart';
 import 'presentation/screens/login.dart';
 import 'presentation/screens/signup.dart';
