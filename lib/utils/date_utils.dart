@@ -1,5 +1,5 @@
 /// Utility functions cho date manipulation trong WeekView
-import '../widgets/NoteCards.dart';
+import '../common/widgets/NoteCards.dart';
 
 class DateUtils {
   /// Lấy ngày đầu tuần (thứ 2)

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "437645280885",
+    "project_id": "daily-tracker-fc325",
+    "storage_bucket": "daily-tracker-fc325.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437645280885:android:4e68433e84cc6c09115a3c",
+        "android_client_info": {
+          "package_name": "com.example.expenses_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8TPFVTdAzNZeZ3n1AHY5J6kDeGZ3IPGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 // Primary app export for compatibility with refactored lib/ layout
 import 'presentation/screens/home.dart';
 import 'presentation/screens/login.dart';
@@ -8,7 +9,12 @@ import 'presentation/screens/note_editor.dart';
 import 'presentation/screens/settings.dart';
 import 'core/routes/routes.dart';
 
-void main() {
+Future<void> main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Firebase.initializeApp();
+
   runApp(const MyExpensesApp());
 }
 
