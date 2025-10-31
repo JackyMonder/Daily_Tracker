@@ -1,9 +1,9 @@
 // Presentation home exports
-import 'package:expenses_app/common/widgets/HorizontalWeekView.dart';
+import 'package:expenses_app/shared/widgets/HorizontalWeekView.dart';
 import 'package:flutter/material.dart';
 
-import 'package:expenses_app/common/widgets/index.dart';
-import 'package:expenses_app/common/widgets/SidebarDrawer.dart';
+import 'package:expenses_app/shared/widgets/index.dart';
+import 'package:expenses_app/shared/widgets/SidebarDrawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

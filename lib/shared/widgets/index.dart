@@ -1,11 +1,11 @@
 // Common widgets exports
-import 'package:expenses_app/common/widgets/MailIcon.dart';
-import 'package:expenses_app/common/widgets/MenuIcon.dart';
-import 'package:expenses_app/common/widgets/SettingIcon.dart';
-import 'package:expenses_app/common/widgets/SearchBar.dart';
-import 'package:expenses_app/common/widgets/NoteCards.dart';
-import 'package:expenses_app/common/widgets/SidebarDrawer.dart';
-import 'package:expenses_app/common/widgets/HorizontalWeekView.dart';
+import 'package:expenses_app/shared/widgets/MailIcon.dart';
+import 'package:expenses_app/shared/widgets/MenuIcon.dart';
+import 'package:expenses_app/shared/widgets/SettingIcon.dart';
+import 'package:expenses_app/shared/widgets/SearchBar.dart';
+import 'package:expenses_app/shared/widgets/NoteCards.dart';
+import 'package:expenses_app/shared/widgets/SidebarDrawer.dart';
+import 'package:expenses_app/shared/widgets/HorizontalWeekView.dart';
 import 'NewNote.dart';
 import 'social_login_buttons.dart';
 class CommonWidgets {

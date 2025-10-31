@@ -1,6 +1,10 @@
 {
   "project_info": {
     "project_number": "437645280885",
+<<<<<<< HEAD
+=======
+    "firebase_url": "https://daily-tracker-fc325-default-rtdb.firebaseio.com",
+>>>>>>> 3bf51494fb4c1ffdf0bfc73aa22dcfb62daded16
     "project_id": "daily-tracker-fc325",
     "storage_bucket": "daily-tracker-fc325.firebasestorage.app"
   },

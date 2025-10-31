@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
-import '../../common/widgets/index.dart';
+import '../../shared/widgets/index.dart';
+
 class AuthIntroScreen extends StatelessWidget {
   const AuthIntroScreen({super.key});
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/date_utils.dart' as CustomDateUtils;
+import '../../utils/date_utils.dart' as CustomDateUtils;
 
 /// Widget hiển thị một ngày trong tuần
 class DayWidget extends StatelessWidget {

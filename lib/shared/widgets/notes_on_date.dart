@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'NoteCards.dart';
-import '../utils/date_utils.dart' as CustomDateUtils;
+import '../../utils/date_utils.dart' as CustomDateUtils;
 
 class NotesOnDate extends StatelessWidget {
   final DateTime date;

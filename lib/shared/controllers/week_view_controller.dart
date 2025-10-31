@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/week_view_models.dart';
-import '../utils/date_utils.dart' as CustomDateUtils;
+import '../../utils/date_utils.dart' as CustomDateUtils;
 
 /// Controller quản lý state và logic cho WeekView
 class WeekViewController {
