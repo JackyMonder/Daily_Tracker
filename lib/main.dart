@@ -9,11 +9,8 @@ import 'presentation/screens/settings.dart';
 import 'core/routes/routes.dart';
 
 Future<void> main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
-  
   await Firebase.initializeApp();
-
   runApp(const MyExpensesApp());
 }
 
