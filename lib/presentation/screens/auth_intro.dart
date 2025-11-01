@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import '../../shared/widgets/index.dart';
+import '../../services/auth_service.dart';
 
-class AuthIntroScreen extends StatelessWidget {
+class AuthIntroScreen extends StatefulWidget {
   const AuthIntroScreen({super.key});
 
   static const routeName = '/auth-intro';
+
+  @override
+  State<AuthIntroScreen> createState() => _AuthIntroScreenState();
+}
+
+class _AuthIntroScreenState extends State<AuthIntroScreen> {
+  final AuthService _authService = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    // Kiểm tra nếu user đã đăng nhập, chuyển đến home
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_authService.isSignedIn && mounted) {
+        Navigator.of(context).pushReplacementNamed('/');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

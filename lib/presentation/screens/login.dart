@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../state/login_state.dart';
 import '../../shared/widgets/rounded_field.dart';
 import '../../shared/widgets/gradient_button.dart';
 import '../../shared/widgets/social_login_buttons.dart';
 import '../../utils/form_validators.dart';
-import '../../shared/widgets/index.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -33,6 +31,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: _loginState,
+      builder: (context, _) {
+        return _buildContent(context);
+      },
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final theme = Theme.of(context);
     final color = theme.colorScheme;
 
@@ -135,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     GradientButton(
-                      text: 'Sign in',
+                      text: _loginState.isLoading ? 'Signing in...' : 'Sign in',
                       enabled: _loginState.canSubmit,
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -146,7 +153,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 12),
                     Center(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: _loginState.isLoading ? null : () {
+                          _loginState.sendPasswordReset(context);
+                        },
                         child: Text(
                           'Forgot the password?',
                           style: theme.textTheme.bodyMedium?.copyWith(

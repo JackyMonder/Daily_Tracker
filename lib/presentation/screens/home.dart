@@ -40,7 +40,14 @@ class _HomeScreenState extends State<HomeScreen> {
       // Lấy userId từ Firebase Auth (nếu có)
       final userId = FirebaseAuth.instance.currentUser?.uid;
       
-      final dates = await _noteRepository.getNotesDates(userId: userId);
+      // Thêm timeout để tránh block UI quá lâu
+      final dates = await _noteRepository.getNotesDates(userId: userId).timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          print('⚠ Timeout loading notes dates - returning empty list');
+          return <DateTime>[];
+        },
+      );
       
       if (mounted) {
         setState(() {
@@ -52,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print('Error loading notes dates: $e');
       if (mounted) {
         setState(() {
+          _notesDates = [];
           _isLoadingDates = false;
         });
       }

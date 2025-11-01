@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../services/auth_service.dart';
 
 /// Settings Screen - Màn hình cài đặt với các tùy chọn Contact, How to Use, Privacy
 class SettingsScreen extends StatelessWidget {
@@ -80,8 +81,51 @@ class SettingsScreen extends StatelessWidget {
             _buildMenuItem(
               icon: Icons.logout,
               title: 'Logout',
-              onTap: () {
-                Navigator.of(context).pushNamed('/auth-intro');
+              onTap: () async {
+                final confirmed = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Logout'),
+                    content: const Text('Are you sure you want to logout?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.red,
+                        ),
+                        child: const Text('Logout'),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (confirmed == true) {
+                  try {
+                    final authService = AuthService();
+                    await authService.signOut();
+                    
+                    if (context.mounted) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/auth-intro',
+                        (route) => false,
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error logging out: $e'),
+                          backgroundColor: Colors.red,
+                          duration: const Duration(seconds: 3),
+                        ),
+                      );
+                    }
+                  }
+                }
               },
             ),
           ],

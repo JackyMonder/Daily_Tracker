@@ -4,13 +4,17 @@
       "email": "alice@example.com",
       "displayName": "Alice Nguyen",
       "createdAt": "2025-10-29T14:00:00Z",
-      "avatarUrl": null
+      "updatedAt": "2025-10-29T14:00:00Z",
+      "avatarUrl": null,
+      "status": "active"
     },
     "uid_002": {
       "email": "bob@example.com",
       "displayName": "Bob Tran",
       "createdAt": "2025-10-29T14:10:00Z",
-      "avatarUrl": null
+      "updatedAt": "2025-10-29T14:10:00Z",
+      "avatarUrl": null,
+      "status": "active"
     }
   },
   "notes": {
@@ -19,23 +23,33 @@
       "title": "Meeting Notes",
       "content": "Discuss project timeline and deliverables.",
       "createdAt": "2025-10-29T15:30:00Z",
-      "updatedAt": "2025-10-29T15:40:00Z"
+      "updatedAt": "2025-10-29T15:40:00Z",
+      "isDeleted": false
     },
     "note_002": {
       "userId": "uid_001",
       "title": "Grocery List",
       "content": "Milk, Eggs, Bread, Butter, Fruits.",
       "createdAt": "2025-10-28T18:10:00Z",
-      "updatedAt": "2025-10-28T18:11:00Z"
+      "updatedAt": "2025-10-28T18:11:00Z",
+      "isDeleted": false
     },
     "note_003": {
       "userId": "uid_002",
       "title": "Hello World!",
       "content": "This is a sample note content.",
       "createdAt": "2025-10-29T20:20:00Z",
-      "updatedAt": "2025-10-29T21:00:00Z"
+      "updatedAt": "2025-10-29T21:00:00Z",
+      "isDeleted": false
+    },
+    "note_004": {
+      "userId": "uid_001",
+      "title": "Colorful Note",
+      "content": "This is a note with a custom color.",
+      "createdAt": "2025-10-29T22:00:00Z",
+      "updatedAt": "2025-10-29T22:00:00Z",
+      "colorValue": 4294901760,
+      "isDeleted": false
     }
   }
 }
-
-

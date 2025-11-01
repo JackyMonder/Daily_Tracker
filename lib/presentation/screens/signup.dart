@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../state/signup_state.dart';
 import '../../shared/widgets/rounded_field.dart';
 import '../../shared/widgets/gradient_button.dart';
@@ -33,6 +32,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: _signUpState,
+      builder: (context, _) {
+        return _buildContent(context);
+      },
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final theme = Theme.of(context);
     final color = theme.colorScheme;
 
@@ -135,7 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 8),
                     GradientButton(
-                      text: 'Sign up',
+                      text: _signUpState.isLoading ? 'Creating account...' : 'Sign up',
                       enabled: _signUpState.canSubmit,
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
