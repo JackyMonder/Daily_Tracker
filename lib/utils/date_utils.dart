@@ -31,21 +31,14 @@ class DateUtils {
   }
 
   /// Lấy danh sách các ngày trong tuần có notes
+  /// 
+  /// Lưu ý: Function này đã được refactor. NotesDates sẽ được truyền từ parent.
+  /// Function này giờ chỉ trả về tất cả ngày trong tuần.
+  /// Filter notes sẽ được handle bởi NotesOnDate widget.
   static List<DateTime> getWeekDatesWithNotes(DateTime selectedDate) {
-    final List<DateTime> weekDates = [];
-    final DateTime startOfWeek = selectedDate.subtract(Duration(days: selectedDate.weekday - 1));
-    
-    for (int i = 0; i < 7; i++) {
-      final DateTime date = startOfWeek.add(Duration(days: i));
-      final notecards = Notecards(selectedDate: date);
-      final filteredData = notecards.filteredCardData;
-      
-      if (filteredData.isNotEmpty) {
-        weekDates.add(date);
-      }
-    }
-    
-    return weekDates;
+    // Trả về tất cả 7 ngày trong tuần
+    // Filter notes sẽ được handle bởi NotesOnDate widget dựa trên notesDates từ parent
+    return getDaysInWeek(selectedDate);
   }
 
   /// Lấy tên ngày trong tuần

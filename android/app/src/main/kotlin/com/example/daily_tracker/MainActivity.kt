@@ -1,4 +1,4 @@
-package com.example.expenses_app
+package com.example.daily_tracker
 
 import io.flutter.embedding.android.FlutterActivity
 

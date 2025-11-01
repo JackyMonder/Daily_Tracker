@@ -13,7 +13,7 @@ A cross-platform Flutter application for managing and viewing expenses, with a m
 
 ## Project Structure
 
-- `lib/main.dart` — App entry point, launches `MyExpensesApp`
+- `lib/main.dart` — App entry point, launches `DailyTrackerApp`
 - `lib/presentation/screens/home.dart` — Main home screen scaffold and layout
 - `lib/common/widgets/NoteCards.dart` — Grid of note cards (sample data)
 - `lib/utils/notesection.dart` — Card widget for displaying note title/content
@@ -27,7 +27,7 @@ A cross-platform Flutter application for managing and viewing expenses, with a m
 2. Clone this repository:
 	```powershell
 	git clone <your-repo-url>
-	cd expenses_app
+	cd daily-tracker
 	```
 3. Get dependencies:
 	```powershell

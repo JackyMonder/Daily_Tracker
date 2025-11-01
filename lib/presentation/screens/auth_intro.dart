@@ -17,13 +17,14 @@ class AuthIntroScreen extends StatelessWidget {
           fit: BoxFit.cover),
         ),
         child: SafeArea(
-          child: Padding(
+          child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 430),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 24),
                     Align(
@@ -68,10 +69,13 @@ class AuthIntroScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Text(
-                      "Let's Get Started!",
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        "Let's Get Started!",
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
+                      ),
                     ),
                     const SizedBox(height: 24),
                     _BrandFullButton(
@@ -144,8 +148,10 @@ class AuthIntroScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    // Wrap để tránh tràn trên màn hình nhỏ
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text("Don't have a account?", style: theme.textTheme.bodyMedium),
                         TextButton(
@@ -154,13 +160,17 @@ class AuthIntroScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pushNamed('/'),
-                      child: Text('Continue as a guest', style: theme.textTheme.bodyMedium?.copyWith(color: const Color(0xFFD55C6A))),
+                    Center(
+                      child: TextButton(
+                        onPressed: () => Navigator.of(context).pushNamed('/'),
+                        child: Text('Continue as a guest', style: theme.textTheme.bodyMedium?.copyWith(color: const Color(0xFFD55C6A))),
+                      ),
                     ),
-                    const Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // Thêm khoảng trống nhỏ thay vì Spacer để tránh tràn màn hình
+                    const SizedBox(height: 24),
+                    // Wrap để tránh tràn trên màn hình nhỏ
+                    Wrap(
+                      alignment: WrapAlignment.spaceEvenly,
                       children: const [
                         TextButton(onPressed: null, child: Text('Privacy Policy')),
                         TextButton(onPressed: null, child: Text('Term of Service')),
@@ -208,11 +218,19 @@ class _BrandFullButton extends StatelessWidget {
         ),
         onPressed: onPressed,
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             icon,
             const SizedBox(width: 12),
-            Text(label, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+            Flexible(
+              child: Text(
+                label,
+                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
       ),

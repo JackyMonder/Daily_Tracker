@@ -5,15 +5,30 @@ import '../../utils/date_utils.dart' as CustomDateUtils;
 
 class NotesOnDate extends StatelessWidget {
   final DateTime date;
+  final List<DateTime>? notesDates;
 
   const NotesOnDate({
     super.key, 
     required this.date,
+    this.notesDates,
   });
 
   @override
   Widget build(BuildContext context) {
-    final weekDatesWithNotes = CustomDateUtils.DateUtils.getWeekDatesWithNotes(date);
+    // Lấy tất cả ngày trong tuần
+    final allWeekDates = CustomDateUtils.DateUtils.getDaysInWeek(date);
+    
+    // Chỉ lấy những ngày có note (nếu notesDates được cung cấp)
+    List<DateTime> weekDatesWithNotes;
+    if (notesDates != null && notesDates!.isNotEmpty) {
+      weekDatesWithNotes = allWeekDates.where((weekDate) {
+        return notesDates!.any((noteDate) {
+          return CustomDateUtils.DateUtils.isSameDate(weekDate, noteDate);
+        });
+      }).toList();
+    } else {
+      weekDatesWithNotes = allWeekDates;   
+    }
     
     if (weekDatesWithNotes.isEmpty) {
       return Container(
@@ -81,7 +96,6 @@ class NotesOnDate extends StatelessWidget {
                     child: Container(
                       constraints: BoxConstraints(
                         minHeight: 100, // Chiều cao tối thiểu
-                        maxHeight: 300, // Chiều cao tối đa
                       ),
                       child: Notecards(selectedDate: date),
                     ),
