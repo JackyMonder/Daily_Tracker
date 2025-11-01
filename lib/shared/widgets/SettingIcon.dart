@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:expenses_app/core/routes/routes.dart';
+import 'package:daily_tracker/core/routes/routes.dart';
 
 class SettingIconButton extends StatelessWidget {
   const SettingIconButton({super.key});

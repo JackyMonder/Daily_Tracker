@@ -29,17 +29,20 @@ class WeekViewHeader extends StatelessWidget {
 class WeekViewPage extends StatelessWidget {
   final List<DateTime> daysInWeek;
   final DateTime selectedDate;
-  final Function(DateTime) onDateSelected;
+  final Function(DateTime)? onDateSelected;
 
   const WeekViewPage({
     super.key,
     required this.daysInWeek,
     required this.selectedDate,
-    required this.onDateSelected,
+    this.onDateSelected,
   });
 
   @override
   Widget build(BuildContext context) {
+    final today = DateTime.now();
+    final isTodaySelected = CustomDateUtils.DateUtils.isSameDate(selectedDate, today);
+    
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -49,11 +52,14 @@ class WeekViewPage extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: daysInWeek.map((day) => DayWidget(
-          day: day,
-          isSelected: CustomDateUtils.DateUtils.isSameDate(day, selectedDate),
-          onTap: () => onDateSelected(day),
-        )).toList(),
+        children: daysInWeek.map((day) {
+          final isToday = CustomDateUtils.DateUtils.isSameDate(day, today);
+          return DayWidget(
+            day: day,
+            isSelected: isToday && isTodaySelected,
+            onTap: null, // Không cho phép chọn ngày nữa
+          );
+        }).toList(),
       ),
     );
   }

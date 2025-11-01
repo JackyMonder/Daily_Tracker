@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Cho phép đọc và ghi cho tất cả documents
+    // ⚠️ CẢNH BÁO: Rules này cho phép truy cập công khai - CHỈ DÙNG CHO DEVELOPMENT
+    // Cho production, bạn cần thêm authentication rules
+    
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+

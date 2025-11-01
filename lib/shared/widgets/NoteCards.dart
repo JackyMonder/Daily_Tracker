@@ -1,114 +1,213 @@
-// import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-
+import '../../data/models/note_model.dart';
+import '../../data/repositories/note_repository.dart';
 import '../../utils/notesection.dart';
 
-
-class Notecards extends StatelessWidget {
+/// Widget hiển thị danh sách note cards
+/// 
+/// Tự động load notes từ Firebase và filter theo ngày được chọn
+class Notecards extends StatefulWidget {
   final DateTime? selectedDate;
+  final String? userId; // Optional: để filter notes theo user
 
-  Notecards({super.key, this.selectedDate});
+  const Notecards({
+    super.key,
+    this.selectedDate,
+    this.userId,
+  });
 
-    // Sample data for cards with creation dates
-    final List<Map<String, dynamic>> _allCardData = [
-    {
-      'title': 'Meeting Notes',
-      'content': 'Discuss project timeline and deliverables.',
-      'createdAt': DateTime.now(),
-    },
-    {
-      'title': 'Grocery List',
-      'content': 'Milk, Eggs, Bread, Butter, Fruits.',
-      'createdAt': DateTime.now().subtract(const Duration(days: 1)),
-    },
-    {
-      'title': 'Workout Plan',
-      'content': 'Monday: Cardio, Wednesday: Strength Training, Friday: Yoga.',
-      'createdAt': DateTime.now().subtract(const Duration(days: 1)),
-    },
-    {
-      'title': 'Team Meeting',
-      'content': 'Discuss project timeline and deliverables.',
-      'createdAt': DateTime.now().subtract(const Duration(days: 3)),
-    },
-    {
-      'title': 'Dating',
-      'content': 'Hang around with girl on Tinder',
-      'createdAt': DateTime.now().add(const Duration(days: 1)),
-    },
-    {
-      'title': 'Greeting',
-      'content': 'Hello Youtube !',
-      'createdAt': DateTime.now().add(const Duration(days: 2)),
-    },
-    {
-      'title': 'Hello World !',
-      'content': 'This is a sample note content',
-      'createdAt': DateTime.now().add(const Duration(days: 3)),
-    },
-  ];
+  @override
+  State<Notecards> createState() => _NotecardsState();
+}
 
-  List<Map<String, dynamic>> get filteredCardData {
-    if (selectedDate == null) return _allCardData;
-    
-    return _allCardData.where((card) {
-      DateTime createdAt = card['createdAt'] as DateTime;
-      return createdAt.year == selectedDate!.year &&
-             createdAt.month == selectedDate!.month &&
-             createdAt.day == selectedDate!.day;
+class _NotecardsState extends State<Notecards> {
+  final NoteRepository _noteRepository = NoteRepository();
+  List<NoteModel> _notes = [];
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotes();
+  }
+
+  @override
+  void didUpdateWidget(Notecards oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Reload notes khi selectedDate thay đổi
+    if (oldWidget.selectedDate != widget.selectedDate) {
+      _loadNotes();
+    }
+  }
+
+  /// Load notes từ Firebase
+  Future<void> _loadNotes() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      List<NoteModel> notes;
+
+      if (widget.selectedDate != null) {
+        // Load notes theo ngày được chọn
+        notes = await _noteRepository.getNotesByDate(
+          widget.selectedDate!,
+          userId: widget.userId,
+        );
+      } else {
+        // Load tất cả notes
+        notes = await _noteRepository.getAllNotes(userId: widget.userId);
+      }
+
+      if (mounted) {
+        setState(() {
+          _notes = notes;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  /// Refresh notes (có thể gọi từ parent)
+  Future<void> refreshNotes() async {
+    await _loadNotes();
+  }
+
+  List<NoteModel> get filteredNotes {
+    if (widget.selectedDate == null) {
+      return _notes;
+    }
+
+    // Filter notes theo ngày (đã được filter ở _loadNotes, nhưng double check)
+    return _notes.where((note) {
+      final noteDate = note.createdAt;
+      return noteDate.year == widget.selectedDate!.year &&
+             noteDate.month == widget.selectedDate!.month &&
+             noteDate.day == widget.selectedDate!.day;
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final filteredData = filteredCardData;
-    return SafeArea(
-        child: filteredData.isEmpty
-        ? Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.note_outlined,
-                size: 64,
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 64,
+              color: Colors.red.withOpacity(0.5),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Error loading notes',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey.withOpacity(0.7),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _error!,
+              style: TextStyle(
+                fontSize: 12,
                 color: Colors.grey.withOpacity(0.5),
               ),
-              const SizedBox(height: 16),
-              Text(
-                selectedDate != null 
-                    ? "No notes for ${_formatDate(selectedDate!)}"
-                    : "No Notes Available",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey.withOpacity(0.7),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ) 
-        : ListView.builder(
-          shrinkWrap: true, // Cho phép ListView tự điều chỉnh kích thước
-          physics: NeverScrollableScrollPhysics(), // Tắt scroll để tránh conflict với parent scroll
-          scrollDirection: Axis.vertical,
-          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
-          itemCount: filteredData.length,
-          itemBuilder: (context, index) {
-            return Notesection(
-              noteTitle: (filteredData[index]['title'] as String?) ?? 'Untitled',
-              noteContent: (filteredData[index]['content'] as String?) ?? 'No Content',
-              // color: filteredData[index]['color'] as Color ?? ,
-            );
-          },
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: _loadNotes,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Retry'),
+            ),
+          ],
         ),
+      );
+    }
+
+    final filteredData = filteredNotes;
+
+    return SafeArea(
+      child: filteredData.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.note_outlined,
+                    size: 64,
+                    color: Colors.grey.withOpacity(0.5),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    widget.selectedDate != null
+                        ? "No notes for ${_formatDate(widget.selectedDate!)}"
+                        : "No Notes Available",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey.withOpacity(0.7),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Tap the + button to create a new note',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.withOpacity(0.5),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
+              itemCount: filteredData.length,
+              itemBuilder: (context, index) {
+                return Notesection(
+                  note: filteredData[index],
+                );
+              },
+            ),
     );
   }
 
   String _formatDate(DateTime date) {
     final months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
     ];
     return '${date.day} ${months[date.month - 1]} ${date.year}';
   }

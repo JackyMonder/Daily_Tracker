@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:expenses_app/core/routes/routes.dart';
+import 'package:daily_tracker/core/routes/routes.dart';
 
 /// Sidebar drawer widget theo thiết kế Figma
 /// Hiển thị thông tin stats, upgrade options và các tính năng Pro

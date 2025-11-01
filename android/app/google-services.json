@@ -1,22 +1,21 @@
 {
   "project_info": {
-    "project_number": "437645280885",
-    "firebase_url": "https://daily-tracker-fc325-default-rtdb.firebaseio.com",
-    "project_id": "daily-tracker-fc325",
-    "storage_bucket": "daily-tracker-fc325.firebasestorage.app"
+    "project_number": "166880408763",
+    "project_id": "daily-tracker-55976",
+    "storage_bucket": "daily-tracker-55976.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:437645280885:android:4e68433e84cc6c09115a3c",
+        "mobilesdk_app_id": "1:166880408763:android:fe722c2a859fa412df259e",
         "android_client_info": {
-          "package_name": "com.example.expenses_app"
+          "package_name": "com.example.daily_tracker"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB8TPFVTdAzNZeZ3n1AHY5J6kDeGZ3IPGY"
+          "current_key": "AIzaSyAygK-5SRf2ygqMEGjg_X72VZCdf9XGvxI"
         }
       ],
       "services": {
