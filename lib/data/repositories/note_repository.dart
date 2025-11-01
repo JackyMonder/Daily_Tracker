@@ -27,9 +27,16 @@ class NoteRepository {
 
           final note = NoteModel.fromMap(noteMap);
 
-          // Lọc theo userId nếu có
-          if (userId == null || note.userId == userId) {
+          // Lọc theo userId - BẮT BUỘC phải có userId và phải trùng khớp
+          // Không lấy notes có userId null hoặc khác userId hiện tại
+          if (userId != null && note.userId != null && note.userId == userId) {
             // Chỉ trả về notes chưa bị xóa
+            if (!note.isDeleted) {
+              notes.add(note);
+            }
+          } else if (userId == null && note.userId == null) {
+            // Trường hợp đặc biệt: không có user (không nên xảy ra nếu đã login)
+            // Nhưng để tương thích với data cũ
             if (!note.isDeleted) {
               notes.add(note);
             }
@@ -176,8 +183,9 @@ class NoteRepository {
 
   /// Lắng nghe thay đổi realtime của notes
   /// 
+  /// [userId] - ID của user (BẮT BUỘC, để filter notes theo user)
   /// Trả về Stream để lắng nghe các thay đổi
-  Stream<List<NoteModel>> watchNotes({String? userId}) {
+  Stream<List<NoteModel>> watchNotes({required String? userId}) {
     try {
       final ref = FirebaseDatabaseService.ref(_notesPath);
       
@@ -196,13 +204,15 @@ class NoteRepository {
 
             final note = NoteModel.fromMap(noteMap);
 
-            // Lọc theo userId nếu có
-            if (userId == null || note.userId == userId) {
+            // Lọc theo userId - BẮT BUỘC phải có userId và phải trùng khớp
+            // Không lấy notes có userId null hoặc khác userId hiện tại
+            if (userId != null && note.userId != null && note.userId == userId) {
               // Chỉ trả về notes chưa bị xóa
               if (!note.isDeleted) {
                 notes.add(note);
               }
             }
+            // Nếu userId == null (không nên xảy ra khi đã login), không trả về notes nào
           } catch (e) {
             // Skip invalid notes
             print('Error parsing note $key: $e');
@@ -222,9 +232,14 @@ class NoteRepository {
 
   /// Lấy danh sách các ngày có notes
   /// 
-  /// [userId] - ID của user (optional)
-  Future<List<DateTime>> getNotesDates({String? userId}) async {
+  /// [userId] - ID của user (BẮT BUỘC để filter notes theo user)
+  Future<List<DateTime>> getNotesDates({required String? userId}) async {
     try {
+      if (userId == null) {
+        // Không có userId, không thể lấy notes
+        return [];
+      }
+      
       final notes = await getAllNotes(userId: userId);
       final dates = <DateTime>[];
 

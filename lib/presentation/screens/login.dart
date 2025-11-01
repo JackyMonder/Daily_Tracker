@@ -91,10 +91,36 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     if (_loginState.submitError != null) ...[
                       const SizedBox(height: 12),
-                      Text(
-                        _loginState.submitError!,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFFD55C6A),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD55C6A).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: const Color(0xFFD55C6A).withOpacity(0.3),
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.error_outline_rounded,
+                              color: const Color(0xFFD55C6A),
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                _loginState.submitError!,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: const Color(0xFFD55C6A),
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -135,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     GradientButton(
-                      text: 'Sign in',
+                      text: _loginState.isLoading ? 'Đang đăng nhập...' : 'Sign in',
                       enabled: _loginState.canSubmit,
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -188,12 +214,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Already have an account?',
+                        Text('Don\'t have an account?',
                             style: theme.textTheme.bodyMedium),
                         TextButton(
                           onPressed: () => Navigator.of(context).pushNamed('/signup'),
                           child: Text(
-                            'Sign in',
+                            'Sign up',
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: const Color(0xFFD55C6A),
                             ),

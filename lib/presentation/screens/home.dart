@@ -1,12 +1,10 @@
 // Presentation home exports
 import 'package:daily_tracker/shared/widgets/HorizontalWeekView.dart';
 import 'package:flutter/material.dart';
-import 'package:daily_tracker/core/services/firebase_database_service.dart';
 import 'package:daily_tracker/shared/widgets/index.dart';
 import 'package:daily_tracker/shared/widgets/SidebarDrawer.dart';
 import 'package:daily_tracker/data/repositories/note_repository.dart';
 import 'package:daily_tracker/presentation/screens/note_editor.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,10 +17,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   DateTime _selectedDate = DateTime.now();
   final NoteRepository _noteRepository = NoteRepository();
-  
+
   // Dates có notes - sẽ được load từ Firebase
   List<DateTime> _notesDates = [];
   bool _isLoadingDates = true;
+
+  // Key để force rebuild HorizontalWeekView khi cần refresh notes
+  Key _weekViewKey = UniqueKey();
 
   @override
   void initState() {
@@ -37,9 +38,20 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     try {
-      // Lấy userId từ Firebase Auth (nếu có)
-      final userId = FirebaseAuth.instance.currentUser?.uid;
+      // Lấy userId từ Firebase Auth - BẮT BUỘC phải có (kể cả anonymous)
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        // Không có user, không load notes
+        if (mounted) {
+          setState(() {
+            _notesDates = [];
+            _isLoadingDates = false;
+          });
+        }
+        return;
+      }
       
+      final userId = user.uid; // Luôn có uid, kể cả anonymous user
       final dates = await _noteRepository.getNotesDates(userId: userId);
       
       if (mounted) {
@@ -113,118 +125,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
 
-    // Nếu note được tạo/cập nhật thành công, refresh dates
+    // Nếu note được tạo/cập nhật thành công, refresh dates và notes
     if (result == true && mounted) {
       await _loadNotesDates();
-    }
-  }
-
-  // Hàm test kết nối Firebase
-  Future<void> _testFirebaseConnection() async {
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
-    
-    try {
-      // Hiển thị loading dialog
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-
-      // Kiểm tra Firebase đã được khởi tạo
-      final firebaseApp = Firebase.app();
-
-      // Test kết nối Realtime Database với URL đúng region
-      final ref = FirebaseDatabaseService.ref('test/connection_test');
-      
-      // Thử ghi dữ liệu test
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      await ref.set({
-        'timestamp': timestamp,
-        'message': 'Test kết nối Firebase thành công',
-        'device': 'Flutter App',
-        'createdAt': timestamp,
+      // Force rebuild HorizontalWeekView để refresh Notecards
+      setState(() {
+        _weekViewKey = UniqueKey();
       });
-
-      // Đợi một chút để đảm bảo dữ liệu được ghi
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      // Thử đọc dữ liệu vừa ghi
-      final snapshot = await ref.get();
-      
-      // Đóng loading dialog
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
-
-      // Hiển thị kết quả thành công
-      if (context.mounted) {
-        scaffoldMessenger.showSnackBar(
-          SnackBar(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  '✅ Kết nối Firebase thành công!',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Project ID: ${firebaseApp.options.projectId}',
-                  style: const TextStyle(fontSize: 12, color: Colors.white70),
-                ),
-                Text(
-                  'Data: ${snapshot.exists ? snapshot.value : 'No data'}',
-                  style: const TextStyle(fontSize: 12, color: Colors.white70),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 4),
-          ),
-        );
-      }
-    } catch (e) {
-      // Đóng loading dialog nếu có lỗi
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
-
-      // Hiển thị lỗi
-      if (context.mounted) {
-        scaffoldMessenger.showSnackBar(
-          SnackBar(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  '❌ Lỗi kết nối Firebase!',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Chi tiết: $e',
-                  style: const TextStyle(fontSize: 12, color: Colors.white70),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 5),
-          ),
-        );
-      }
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -265,15 +176,16 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            Expanded(
-              child: _isLoadingDates
-                  ? const Center(child: CircularProgressIndicator())
-                  : HorizontalWeekView(
-                      selectedDate: _selectedDate,
-                      onDateSelected: _onDateSelected,
-                      notesDates: _notesDates,
-                    ),
-            ),
+                Expanded(
+                  child: _isLoadingDates
+                      ? const Center(child: CircularProgressIndicator())
+                      : HorizontalWeekView(
+                          key: _weekViewKey,
+                          selectedDate: _selectedDate,
+                          onDateSelected: _onDateSelected,
+                          notesDates: _notesDates,
+                        ),
+                ),
           ],
         ),
       ),

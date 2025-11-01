@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'dart:convert';
 import 'package:daily_tracker/presentation/screens/note_editor.dart';
 import 'package:daily_tracker/data/models/note_model.dart';
+import 'package:daily_tracker/shared/widgets/formatted_text_preview.dart';
 
 class Notesection extends StatelessWidget {
   final NoteModel note;
@@ -12,12 +15,10 @@ class Notesection extends StatelessWidget {
     this.onTap,
   });
 
-  /// Lấy màu cho note card
   Color _getNoteColor() {
     if (note.colorValue != null) {
       return Color(note.colorValue!);
     }
-    // Màu mặc định
     return Colors.white;
   }
 
@@ -33,7 +34,7 @@ class Notesection extends StatelessWidget {
             builder: (_) => NoteEditorScreen(
               noteId: note.id,
               initialTitle: note.title,
-              initialContent: note.content,
+              initialContent: note.deltaContent ?? note.content,
               initialColorValue: note.colorValue,
             ),
           ),
@@ -89,23 +90,13 @@ class Notesection extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    note.content.isEmpty ? 'No content' : note.content,
-                    style: TextStyle(
-                      fontSize: 14,
-                      height: 1.3,
-                      color: isColored
-                          ? noteColor.withOpacity(0.8)
-                          : Colors.black87,
-                    ),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                FormattedTextPreview(
+                  note: note,
+                  isColored: isColored,
+                  noteColor: noteColor,
+                  maxLines: 3,
                 ),
                 const SizedBox(height: 8),
-                // Hiển thị ngày tạo
                 Text(
                   _formatDate(note.createdAt),
                   style: TextStyle(

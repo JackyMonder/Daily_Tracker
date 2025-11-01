@@ -8,27 +8,25 @@ class NotesOnDate extends StatelessWidget {
   final List<DateTime>? notesDates;
 
   const NotesOnDate({
-    super.key, 
+    super.key,
     required this.date,
     this.notesDates,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Lấy tất cả ngày trong tuần
     final allWeekDates = CustomDateUtils.DateUtils.getDaysInWeek(date);
-    
-    // Chỉ lấy những ngày có note (nếu notesDates được cung cấp)
-    List<DateTime> weekDatesWithNotes;
+
+    // Chỉ lấy những ngày có note - luôn filter, không hiển thị ngày không có note
+    List<DateTime> weekDatesWithNotes = [];
     if (notesDates != null && notesDates!.isNotEmpty) {
       weekDatesWithNotes = allWeekDates.where((weekDate) {
         return notesDates!.any((noteDate) {
           return CustomDateUtils.DateUtils.isSameDate(weekDate, noteDate);
         });
       }).toList();
-    } else {
-      weekDatesWithNotes = allWeekDates;   
     }
+    // Nếu không có notesDates hoặc không có note nào, weekDatesWithNotes sẽ là empty list
     
     if (weekDatesWithNotes.isEmpty) {
       return Container(
@@ -97,7 +95,9 @@ class NotesOnDate extends StatelessWidget {
                       constraints: BoxConstraints(
                         minHeight: 100, // Chiều cao tối thiểu
                       ),
-                      child: Notecards(selectedDate: date),
+                      child: Notecards(
+                        selectedDate: date,
+                      ),
                     ),
                   ),
                 ],

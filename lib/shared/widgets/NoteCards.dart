@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../data/models/note_model.dart';
 import '../../data/repositories/note_repository.dart';
 import '../../utils/notesection.dart';
 
-/// Widget hiển thị danh sách note cards
-/// 
-/// Tự động load notes từ Firebase và filter theo ngày được chọn
 class Notecards extends StatefulWidget {
   final DateTime? selectedDate;
-  final String? userId; // Optional: để filter notes theo user
+  final String? userId;
 
   const Notecards({
     super.key,
@@ -35,13 +33,11 @@ class _NotecardsState extends State<Notecards> {
   @override
   void didUpdateWidget(Notecards oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Reload notes khi selectedDate thay đổi
     if (oldWidget.selectedDate != widget.selectedDate) {
       _loadNotes();
     }
   }
 
-  /// Load notes từ Firebase
   Future<void> _loadNotes() async {
     setState(() {
       _isLoading = true;
@@ -49,17 +45,21 @@ class _NotecardsState extends State<Notecards> {
     });
 
     try {
+      String? userId = widget.userId;
+      if (userId == null) {
+        final user = FirebaseAuth.instance.currentUser;
+        userId = user?.uid;
+      }
+
       List<NoteModel> notes;
 
       if (widget.selectedDate != null) {
-        // Load notes theo ngày được chọn
         notes = await _noteRepository.getNotesByDate(
           widget.selectedDate!,
-          userId: widget.userId,
+          userId: userId,
         );
       } else {
-        // Load tất cả notes
-        notes = await _noteRepository.getAllNotes(userId: widget.userId);
+        notes = await _noteRepository.getAllNotes(userId: userId);
       }
 
       if (mounted) {
@@ -78,7 +78,6 @@ class _NotecardsState extends State<Notecards> {
     }
   }
 
-  /// Refresh notes (có thể gọi từ parent)
   Future<void> refreshNotes() async {
     await _loadNotes();
   }
@@ -88,7 +87,6 @@ class _NotecardsState extends State<Notecards> {
       return _notes;
     }
 
-    // Filter notes theo ngày (đã được filter ở _loadNotes, nhưng double check)
     return _notes.where((note) {
       final noteDate = note.createdAt;
       return noteDate.year == widget.selectedDate!.year &&

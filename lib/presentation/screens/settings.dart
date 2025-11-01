@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/services/auth_service.dart';
 
 /// Settings Screen - Màn hình cài đặt với các tùy chọn Contact, How to Use, Privacy
 class SettingsScreen extends StatelessWidget {
@@ -81,7 +82,7 @@ class SettingsScreen extends StatelessWidget {
               icon: Icons.logout,
               title: 'Logout',
               onTap: () {
-                Navigator.of(context).pushNamed('/auth-intro');
+                _handleLogout(context);
               },
             ),
           ],
@@ -152,5 +153,157 @@ class SettingsScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// Xử lý logout với confirmation dialog
+  Future<void> _handleLogout(BuildContext context) async {
+    // Hiển thị confirmation dialog
+    final shouldLogout = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: const Color(0xFFD55C6A).withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.logout_rounded,
+                color: Color(0xFFD55C6A),
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Expanded(
+              child: Text(
+                'Xác nhận đăng xuất',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF333333),
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: const Text(
+          'Bạn có chắc chắn muốn đăng xuất?\n\nBạn sẽ cần đăng nhập lại để tiếp tục sử dụng ứng dụng.',
+          style: TextStyle(
+            fontSize: 15,
+            color: Color(0xFF666666),
+            height: 1.5,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            style: TextButton.styleFrom(
+              foregroundColor: const Color(0xFF666666),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 12,
+              ),
+            ),
+            child: const Text(
+              'Hủy',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFD55C6A),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 12,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text(
+              'Đăng xuất',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    // Nếu user xác nhận logout
+    if (shouldLogout == true && context.mounted) {
+      try {
+        // Đóng settings screen trước
+        Navigator.of(context).pop();
+
+        // Hiển thị loading indicator
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+
+        // Thực hiện logout
+        final authService = AuthService();
+        await authService.signOut();
+
+        // Đóng loading indicator và navigate đến auth intro
+        if (context.mounted) {
+          Navigator.of(context).pop(); // Đóng loading
+          Navigator.of(context).pushReplacementNamed('/auth-intro');
+        }
+      } catch (e) {
+        // Đóng loading indicator nếu có
+        if (context.mounted) {
+          Navigator.of(context).pop(); // Đóng loading nếu đang hiển thị
+          
+          // Hiển thị error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(
+                    Icons.error_outline_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Lỗi khi đăng xuất: ${e.toString()}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: const Color(0xFFD55C6A),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              duration: const Duration(seconds: 4),
+            ),
+          );
+        }
+      }
+    }
   }
 }
