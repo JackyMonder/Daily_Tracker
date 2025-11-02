@@ -13,8 +13,10 @@ class WeekViewController {
   }
 
   void _initializeState() {
-    final selectedDate = config.selectedDate ?? DateTime.now();
-    final currentDaySelected = CustomDateUtils.DateUtils.getDateSelected(selectedDate);
+    // Luôn focus vào ngày hiện tại
+    final now = DateTime.now();
+    final selectedDate = now;
+    final currentDaySelected = now;
     final currentPage = 500; // Bắt đầu từ page 500 (giữa)
     
     _state = WeekViewState(
@@ -51,10 +53,19 @@ class WeekViewController {
     DateTime currentWeekStart = CustomDateUtils.DateUtils.getWeekStart(DateTime.now());
     DateTime newWeekStart = currentWeekStart.add(Duration(days: weekOffset * 7));
     
+    // Luôn focus vào ngày hiện tại trong tuần đó
+    final now = DateTime.now();
+    final newWeekDays = CustomDateUtils.DateUtils.getDaysInWeek(newWeekStart);
+    // Kiểm tra xem ngày hiện tại có trong tuần này không
+    final todayInWeek = newWeekDays.firstWhere(
+      (day) => CustomDateUtils.DateUtils.isSameDate(day, now),
+      orElse: () => newWeekStart, // Nếu không có, chọn ngày đầu tuần
+    );
+    
     _state = _state.copyWith(
       currentPage: page,
-      currentDaySelected: newWeekStart, // Luôn chọn ngày đầu tuần (thứ 2)
-      daysInWeek: CustomDateUtils.DateUtils.getDaysInWeek(newWeekStart),
+      currentDaySelected: todayInWeek, // Focus vào ngày hiện tại
+      daysInWeek: newWeekDays,
     );
     
     onStateChanged(_state);

@@ -1,11 +1,63 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
 import '../../shared/widgets/index.dart';
+import '../state/login_state.dart';
 
-class AuthIntroScreen extends StatelessWidget {
+class AuthIntroScreen extends StatefulWidget {
   const AuthIntroScreen({super.key});
 
   static const routeName = '/auth-intro';
+
+  @override
+  State<AuthIntroScreen> createState() => _AuthIntroScreenState();
+}
+
+class _AuthIntroScreenState extends State<AuthIntroScreen> {
+  String? _googleClientId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadGoogleClientId();
+  }
+
+  /// Lấy Google Client ID
+  /// 
+  /// Lưu ý: Với mobile (Android/iOS), không cần clientId vì sẽ lấy từ google-services.json
+  /// Với web, cần có clientId từ Google Cloud Console OAuth 2.0 Client ID
+  void _loadGoogleClientId() {
+    // Với mobile, google_sign_in tự động lấy config từ google-services.json
+    // Với web, cần set clientId. Tạm thời để null để sử dụng auto-detect
+    // TODO: Nếu cần cho web, lấy từ Google Cloud Console OAuth 2.0 Client ID (Web client)
+    _googleClientId = null; // null = tự động detect cho mobile, cần set cho web
+  }
+
+  Future<void> _handleAnonymousLogin(BuildContext context) async {
+    final loginState = LoginState();
+    try {
+      await loginState.handleAnonymousLogin(context);
+    } catch (e) {
+      // Error đã được xử lý trong handleAnonymousLogin
+    } finally {
+      // Delay dispose để đảm bảo error message được hiển thị (nếu có)
+      Future.delayed(const Duration(seconds: 2), () {
+        loginState.dispose();
+      });
+    }
+  }
+
+  Future<void> _handleGoogleLogin(BuildContext context) async {
+    final loginState = LoginState();
+    try {
+      await loginState.handleGoogleLogin(context, _googleClientId);
+    } catch (e) {
+      // Error đã được xử lý trong handleGoogleLogin
+    } finally {
+      // Delay dispose để đảm bảo error message được hiển thị (nếu có)
+      Future.delayed(const Duration(seconds: 2), () {
+        loginState.dispose();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +135,7 @@ class AuthIntroScreen extends StatelessWidget {
                     _BrandFullButton(
                       icon: CommonWidgets().googleCircle,
                       label: 'Continue with Google',
-                      onPressed: () {},
+                      onPressed: () => _handleGoogleLogin(context),
                     ),
                     const SizedBox(height: 12),
                     _BrandFullButton(
@@ -155,7 +207,7 @@ class AuthIntroScreen extends StatelessWidget {
                       ],
                     ),
                     TextButton(
-                      onPressed: () => Navigator.of(context).pushNamed('/'),
+                      onPressed: () => _handleAnonymousLogin(context),
                       child: Text('Continue as a guest', style: theme.textTheme.bodyMedium?.copyWith(color: const Color(0xFFD55C6A))),
                     ),
                     const Spacer(),
@@ -178,10 +230,10 @@ class AuthIntroScreen extends StatelessWidget {
 }
 
 class _BrandFullButton extends StatelessWidget {
-  const _BrandFullButton({required this.icon, required this.label, required this.onPressed});
+  const _BrandFullButton({required this.icon, required this.label, this.onPressed});
   final Widget icon;
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

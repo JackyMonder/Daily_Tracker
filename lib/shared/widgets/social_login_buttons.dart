@@ -11,14 +11,14 @@ class FacebookCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 36,
-      height: 36,
+      width: 33,
+      height: 33,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: const Color(0xFF039BE5),
       ),
       child: Center(
-        child: SvgPicture.string(_fSvg, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), width: 24, height: 24),
+        child: SvgPicture.string(_fSvg, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), width: 22, height: 22),
       ),
     );
   }
@@ -43,7 +43,7 @@ class GoogleCircle extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
       ),
-      child: Center(child: SvgPicture.string(_gSvg, width: 36, height: 36)),
+      child: Center(child: SvgPicture.string(_gSvg, width: 22, height: 22)),
     );
   }
 }

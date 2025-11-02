@@ -76,14 +76,18 @@ class _HorizontalWeekViewState extends State<HorizontalWeekView>
               return WeekViewPage(
                 daysInWeek: _state.daysInWeek,
                 selectedDate: _state.currentDaySelected,
-                onDateSelected: (date) => _controller.onDateSelected(date, _onStateChanged),
+                // Không còn chức năng chọn ngày
+                onDateSelected: null,
               );
             },
           ),
         ),
         SizedBox(height: 20),
         Expanded(
-          child: NotesOnDate(date: _state.currentDaySelected),
+          child: NotesOnDate(
+            date: _state.currentDaySelected,
+            notesDates: widget.notesDates,
+          ),
         ),
       ],
     );

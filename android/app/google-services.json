@@ -1,5 +1,6 @@
 {
   "project_info": {
+<<<<<<< HEAD
     "project_number": "437645280885",
 <<<<<<< HEAD
 =======
@@ -7,24 +8,55 @@
 >>>>>>> 3bf51494fb4c1ffdf0bfc73aa22dcfb62daded16
     "project_id": "daily-tracker-fc325",
     "storage_bucket": "daily-tracker-fc325.firebasestorage.app"
+=======
+    "project_number": "166880408763",
+    "firebase_url": "https://daily-tracker-55976-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "daily-tracker-55976",
+    "storage_bucket": "daily-tracker-55976.firebasestorage.app"
+>>>>>>> 5e96b8ca90a51ddf4d2b3f32e0c5d2d99ac3c6d0
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:437645280885:android:4e68433e84cc6c09115a3c",
+        "mobilesdk_app_id": "1:166880408763:android:8a3dd67d4476cf5cdf259e",
         "android_client_info": {
-          "package_name": "com.example.expenses_app"
+          "package_name": "com.example.daily_tracker"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "166880408763-gcopd7i69pgslpgd949soim8o26enj1c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.daily_tracker",
+            "certificate_hash": "f1ada8d800dacfd5a7b597fcac0be0b2147df8a8"
+          }
+        },
+        {
+          "client_id": "166880408763-cbbtjcsdn9ma3dovg9krv6iknohmg5lm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyB8TPFVTdAzNZeZ3n1AHY5J6kDeGZ3IPGY"
+          "current_key": "AIzaSyAygK-5SRf2ygqMEGjg_X72VZCdf9XGvxI"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "166880408763-cbbtjcsdn9ma3dovg9krv6iknohmg5lm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "166880408763-27bgvsqmva4a298jn183bin4crlh12l7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.expensesApp"
+              }
+            }
+          ]
         }
       }
     }

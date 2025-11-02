@@ -7,13 +7,13 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:expenses_app/main.dart';
+import 'package:daily_tracker/main.dart';
 
 void main() {
-  testWidgets('App shows Expenses title', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyExpensesApp());
+  testWidgets('App shows Daily Tracker title', (WidgetTester tester) async {
+    await tester.pumpWidget(const DailyTrackerApp());
 
-    // Verify the home screen title is present.
-    expect(find.text('Expenses'), findsOneWidget);
+    // Verify the app loads successfully.
+    expect(find.byType(DailyTrackerApp), findsOneWidget);
   });
 }

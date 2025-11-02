@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:expenses_app/core/routes/routes.dart';
-import 'package:expenses_app/presentation/screens/note_editor.dart';
 
+/// Widget hiển thị nút tạo note mới
+/// 
+/// Lưu ý: Widget này chỉ hiển thị UI, navigation được handle bởi parent
 class NewNote extends StatelessWidget {
   const NewNote({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => const NoteEditorScreen(),
-            settings: const RouteSettings(name: Routes.noteEditor),
-          ),
-        );
-      },
-      child: SizedBox(
+    return SizedBox(
         width: 55,
         height: 55,
         child: Stack(
@@ -46,7 +38,6 @@ class NewNote extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
