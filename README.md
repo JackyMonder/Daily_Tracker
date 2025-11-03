@@ -3,6 +3,7 @@
 [![Flutter](https://img.shields.io/badge/Flutter-3.9.2+-02569B?logo=flutter)](https://flutter.dev)
 [![Firebase](https://img.shields.io/badge/Firebase-Latest-FFCA28?logo=firebase)](https://firebase.google.com)
 [![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20Web%20%7C%20Desktop-007AFF)](https://flutter.dev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 A production-ready cross-platform Flutter application for managing daily notes with real-time synchronization powered by Firebase. Built with modern architecture patterns and full authentication support.
 
@@ -103,6 +104,30 @@ lib/
 
 ---
 
+## 📦 Project Structure
+
+Typical layout of key app modules and files:
+
+```
+lib/
+├── core/
+│   ├── routes/               # AppRouter, route names
+│   ├── services/             # AuthService, NoteService, Firebase wiring
+│   └── themes/               # Light/Dark theme
+├── data/
+│   ├── models/               # Note, UserProfile, enums
+│   └── repositories/         # NoteRepository, UserRepository
+├── presentation/
+│   ├── screens/              # HomeScreen, EditorScreen, SettingsScreen
+│   ├── widgets/              # Reusable UI components
+│   └── state/                # State management (e.g. Provider/Bloc)
+└── shared/
+    └── widgets/
+        └── NoteCards.dart    # Note card list/grid UI
+```
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -119,7 +144,7 @@ lib/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd daily-tracker
+   cd daily_tracker
    ```
 
 2. **Install dependencies**
@@ -150,6 +175,31 @@ flutter test
 flutter build apk --release        # Android
 flutter build ios --release         # iOS
 flutter build web --release         # Web
+```
+
+---
+
+## 📚 Dependencies
+
+Core runtime dependencies (see `pubspec.yaml` for the complete list and versions):
+
+- flutter, flutter_localizations
+- firebase_core, firebase_auth, firebase_database
+- google_sign_in
+- flutter_quill (rich text editor)
+- provider / riverpod / bloc (choose one for state management)
+- intl, collection
+
+Development tooling:
+
+- flutter_lints, very_good_analysis (optional)
+- flutterfire_cli (for Firebase configuration)
+
+Install/update:
+
+```bash
+flutter pub get
+flutter pub upgrade --major-versions
 ```
 
 ---
@@ -276,6 +326,37 @@ For widget tests:
 ```bash
 flutter test test/widget_test.dart
 ```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! To get started:
+
+1. Fork the repository and create your feature branch:
+   ```bash
+   git checkout -b feat/your-feature
+   ```
+2. Install dependencies and run locally:
+   ```bash
+   flutter pub get && flutter run
+   ```
+3. Write tests and ensure they pass:
+   ```bash
+   flutter test
+   ```
+4. Follow Conventional Commits (e.g., `feat:`, `fix:`, `chore:`) and open a pull request.
+
+Guidelines:
+- Keep PRs small and focused.
+- Include screenshots/GIFs for UI changes.
+- Add/adjust tests for new behavior.
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 ---
 

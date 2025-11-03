@@ -44,3 +44,37 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Backend (Node/TypeScript) related
+/backend/node_modules/
+/backend/dist/
+/backend/build/
+/backend/.nyc_output/
+/backend/coverage/
+/backend/.env
+/backend/.env.*
+/backend/npm-debug.log*
+/backend/yarn-debug.log*
+/backend/yarn-error.log*
+/backend/pnpm-debug.log*
+/backend/lerna-debug.log*
+
+# Prisma / SQLite (development) related
+/backend/prisma/dev.db
+/backend/prisma/dev.db-journal
+/backend/prisma/*.db
+/backend/prisma/*.db-journal
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.Spotlight-V100
+.Trashes
+
+# General logs
+*.log
+logs
+*.pid
+*.seed
+*.pid.lock
