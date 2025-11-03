@@ -264,5 +264,96 @@ class NoteRepository {
       return [];
     }
   }
+
+  /// Lấy số lượng notes đã xóa (soft delete)
+  /// 
+  /// [userId] - ID của user (BẮT BUỘC để filter notes theo user)
+  Future<int> getDeletedNotesCount({required String? userId}) async {
+    try {
+      if (userId == null) {
+        return 0;
+      }
+
+      final ref = FirebaseDatabaseService.ref(_notesPath);
+      final snapshot = await ref.get();
+
+      if (!snapshot.exists || snapshot.value == null) {
+        return 0;
+      }
+
+      final data = snapshot.value as Map<dynamic, dynamic>;
+      int deletedCount = 0;
+
+      data.forEach((key, value) {
+        try {
+          final noteMap = Map<String, dynamic>.from(value as Map);
+          noteMap['id'] = key.toString();
+
+          final note = NoteModel.fromMap(noteMap);
+
+          // Chỉ đếm notes của user hiện tại và đã bị xóa
+          if (note.userId != null && note.userId == userId) {
+            if (note.isDeleted) {
+              deletedCount++;
+            }
+          }
+        } catch (e) {
+          // Skip invalid notes
+          print('Error parsing note $key: $e');
+        }
+      });
+
+      return deletedCount;
+    } catch (e) {
+      print('Error getting deleted notes count: $e');
+      return 0;
+    }
+  }
+
+  /// Stream lắng nghe số lượng notes đã xóa (real-time)
+  /// 
+  /// [userId] - ID của user (BẮT BUỘC để filter notes theo user)
+  Stream<int> watchDeletedNotesCount({required String? userId}) {
+    try {
+      if (userId == null) {
+        return Stream.value(0);
+      }
+
+      final ref = FirebaseDatabaseService.ref(_notesPath);
+      
+      return ref.onValue.map((event) {
+        if (!event.snapshot.exists || event.snapshot.value == null) {
+          return 0;
+        }
+
+        final data = event.snapshot.value as Map<dynamic, dynamic>;
+        int deletedCount = 0;
+
+        data.forEach((key, value) {
+          try {
+            final noteMap = Map<String, dynamic>.from(value as Map);
+            noteMap['id'] = key.toString();
+
+            final note = NoteModel.fromMap(noteMap);
+
+            // Chỉ đếm notes của user hiện tại và đã bị xóa
+            if (note.userId != null && note.userId == userId) {
+              if (note.isDeleted) {
+                deletedCount++;
+              }
+            }
+          } catch (e) {
+            // Skip invalid notes
+            print('Error parsing note $key: $e');
+          }
+        });
+
+        return deletedCount;
+      });
+    } catch (e) {
+      print('Error watching deleted notes count: $e');
+      return Stream.value(0);
+    }
+  }
 }
 
