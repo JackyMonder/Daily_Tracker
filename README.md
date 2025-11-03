@@ -37,7 +37,6 @@ A production-ready cross-platform Flutter application for managing daily notes w
 ## 📋 Table of Contents
 
 - [Features](#-features)
-- [Architecture](#-architecture)
 - [Getting Started](#-getting-started)
 - [Configuration](#-configuration)
 - [Project Structure](#-project-structure)
@@ -79,28 +78,6 @@ A production-ready cross-platform Flutter application for managing daily notes w
 - **Realtime Database**: Live data synchronization
 - **User Data Isolation**: Secure, per-user data access
 - **Offline Support**: Automatic sync when connection is restored
-
----
-
-## 🏗️ Architecture
-
-The app follows clean architecture principles with clear separation of concerns:
-
-```
-lib/
-├── core/              # Core services and configurations
-│   ├── services/      # Business logic services
-│   ├── routes/        # App routing
-│   └── themes/        # Theme configuration
-├── data/              # Data layer
-│   ├── models/        # Data models
-│   └── repositories/   # Data repositories
-├── presentation/      # UI layer
-│   ├── screens/       # App screens
-│   ├── widgets/       # Reusable UI widgets
-│   └── state/         # State management
-└── shared/            # Shared utilities and widgets
-```
 
 ---
 
