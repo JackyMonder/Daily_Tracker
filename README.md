@@ -209,34 +209,6 @@ For detailed Google Sign-In configuration instructions, see `GOOGLE_SIGN_IN_SETU
 
 ---
 
-## 📦 Dependencies
-
-### Core Dependencies
-```yaml
-firebase_core: ^4.2.0           # Firebase Core SDK
-firebase_auth: ^6.1.1           # Firebase Authentication
-firebase_database: ^12.0.3      # Firebase Realtime Database
-google_sign_in: ^6.3.0          # Google Sign-In
-firebase_ui_oauth_google: ^2.0.1 # Firebase UI for Google
-```
-
-### UI & Editor
-```yaml
-flutter_quill: ^11.5.0          # Rich text editor
-flutter_svg: ^2.2.1            # SVG support
-font_awesome_flutter: ^10.7.0   # Icon library
-```
-
-### Utilities
-```yaml
-shared_preferences: ^2.3.3     # Local storage
-flutter_localizations          # Built-in localization
-```
-
-See `pubspec.yaml` for complete dependency list.
-
----
-
 ## 📱 Platform Support
 
 | Platform | Status | Notes |
@@ -263,27 +235,6 @@ See `pubspec.yaml` for complete dependency list.
 - Firebase Security Rules enforcement
 - Secure note storage with encryption in transit
 - Anonymous user data cleanup
-
-### Recommended Firebase Security Rules
-
-```json
-{
-  "rules": {
-    "notes": {
-      "$noteId": {
-        ".read": "auth != null && data.child('userId').val() == auth.uid",
-        ".write": "auth != null && data.child('userId').val() == auth.uid"
-      }
-    },
-    "users": {
-      "$userId": {
-        ".read": "auth != null && $userId == auth.uid",
-        ".write": "auth != null && $userId == auth.uid"
-      }
-    }
-  }
-}
-```
 
 ---
 
@@ -325,47 +276,6 @@ For widget tests:
 ```bash
 flutter test test/widget_test.dart
 ```
-
----
-
-## 🤝 Contributing
-
-This is a private project. For internal contributors:
-
-1. Create a feature branch from `main`
-2. Make your changes with proper documentation
-3. Write tests for new features
-4. Submit a pull request with detailed description
-
-### Code Style
-- Follow Dart/Flutter style guide
-- Use meaningful variable names
-- Add comments for complex logic
-- Keep functions focused and small
-
----
-
-## 📄 License
-
-This project is **private** and not published to pub.dev. All rights reserved.
-
----
-
-## 📞 Support
-
-For issues, questions, or contributions:
-- Check `GOOGLE_SIGN_IN_SETUP.md` for authentication setup
-- Review Firebase Console for configuration issues
-- Consult Flutter documentation for development questions
-
----
-
-## 🙏 Acknowledgments
-
-- Flutter team for the amazing framework
-- Firebase team for robust backend services
-- Flutter Quill for rich text editing capabilities
-- Open source community for inspiration and tools
 
 ---
 

@@ -36,9 +36,7 @@ class _AuthIntroScreenState extends State<AuthIntroScreen> {
     try {
       await loginState.handleAnonymousLogin(context);
     } catch (e) {
-      // Error đã được xử lý trong handleAnonymousLogin
     } finally {
-      // Delay dispose để đảm bảo error message được hiển thị (nếu có)
       Future.delayed(const Duration(seconds: 2), () {
         loginState.dispose();
       });
@@ -50,9 +48,7 @@ class _AuthIntroScreenState extends State<AuthIntroScreen> {
     try {
       await loginState.handleGoogleLogin(context, _googleClientId);
     } catch (e) {
-      // Error đã được xử lý trong handleGoogleLogin
     } finally {
-      // Delay dispose để đảm bảo error message được hiển thị (nếu có)
       Future.delayed(const Duration(seconds: 2), () {
         loginState.dispose();
       });

@@ -13,7 +13,6 @@ class WeekViewController {
   }
 
   void _initializeState() {
-    // Luôn focus vào ngày hiện tại
     final now = DateTime.now();
     final selectedDate = now;
     final currentDaySelected = now;
@@ -46,10 +45,7 @@ class WeekViewController {
   }
 
   void onPageChanged(int page, Function(WeekViewState) onStateChanged) {
-    // Tính toán tuần mới dựa trên page index
-    int weekOffset = page - 500; // Offset từ tuần hiện tại
-    
-    // Lấy tuần hiện tại và tính toán tuần mới
+    int weekOffset = page - 500;
     DateTime currentWeekStart = CustomDateUtils.DateUtils.getWeekStart(DateTime.now());
     DateTime newWeekStart = currentWeekStart.add(Duration(days: weekOffset * 7));
     

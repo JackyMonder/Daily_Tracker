@@ -150,9 +150,7 @@ class LoginState extends ChangeNotifier {
           Navigator.of(context).pushReplacementNamed('/');
         }
       } else if (credential == null) {
-        // User đã hủy đăng nhập, không hiển thị lỗi
         print('LoginState: User cancelled Google login');
-        // Chỉ reset loading state - không hiển thị error
       } else {
         final errorMessage = 'Đăng nhập với Google thất bại. Vui lòng thử lại.';
         print('LoginState: Google login failed - $errorMessage');
@@ -175,7 +173,7 @@ class LoginState extends ChangeNotifier {
     }
   }
 
-  /// Hiển thị snackbar lỗi chuyên nghiệp với icon và action
+  /// Hiển thị snackbar lỗi
   void _showErrorSnackBar(BuildContext context, String message) {
     if (!context.mounted) return;
     

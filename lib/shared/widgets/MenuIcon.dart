@@ -15,7 +15,6 @@ class MenuIconButton extends StatelessWidget {
       child: IconButton(
         icon: Icon(Icons.menu, color: Colors.white, size: 30),
         onPressed: () {
-          // Mở drawer khi bấm menu button
           Scaffold.of(context).openDrawer();
         },
       ),

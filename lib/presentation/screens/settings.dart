@@ -56,7 +56,6 @@ class SettingsScreen extends StatelessWidget {
               icon: Icons.help_outline,
               title: 'How to Use',
               onTap: () {
-                // Handle How to Use tap
                 _showComingSoon(context, 'How to Use');
               },
             ),
@@ -69,7 +68,6 @@ class SettingsScreen extends StatelessWidget {
               icon: Icons.verified_user_outlined,
               title: 'Privacy',
               onTap: () {
-                // Handle Privacy tap
                 _showComingSoon(context, 'Privacy');
               },
             ),
@@ -157,7 +155,6 @@ class SettingsScreen extends StatelessWidget {
 
   /// Xử lý logout với confirmation dialog
   Future<void> _handleLogout(BuildContext context) async {
-    // Hiển thị confirmation dialog
     final shouldLogout = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -246,10 +243,8 @@ class SettingsScreen extends StatelessWidget {
     // Nếu user xác nhận logout
     if (shouldLogout == true && context.mounted) {
       try {
-        // Đóng settings screen trước
         Navigator.of(context).pop();
 
-        // Hiển thị loading indicator
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -258,21 +253,17 @@ class SettingsScreen extends StatelessWidget {
           ),
         );
 
-        // Thực hiện logout
         final authService = AuthService();
         await authService.signOut();
 
-        // Đóng loading indicator và navigate đến auth intro
         if (context.mounted) {
-          Navigator.of(context).pop(); // Đóng loading
+          Navigator.of(context).pop();
           Navigator.of(context).pushReplacementNamed('/auth-intro');
         }
       } catch (e) {
-        // Đóng loading indicator nếu có
         if (context.mounted) {
-          Navigator.of(context).pop(); // Đóng loading nếu đang hiển thị
+          Navigator.of(context).pop();
           
-          // Hiển thị error message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Row(

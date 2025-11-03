@@ -11,7 +11,6 @@ class SignUpState extends ChangeNotifier {
 
   final AuthService _authService = AuthService();
 
-  // Getters
   TextEditingController get emailController => _emailController;
   TextEditingController get passwordController => _passwordController;
   bool get obscure => _obscure;
@@ -74,7 +73,7 @@ class SignUpState extends ChangeNotifier {
       final credential = await _authService.signUpWithEmailAndPassword(
         email: email,
         password: _passwordController.text,
-        name: name, // Tự động tạo tên từ email
+        name: name,
       );
 
       // Chỉ navigate khi đăng ký thành công và có credential
@@ -85,11 +84,9 @@ class SignUpState extends ChangeNotifier {
         setSubmitError('Đăng ký thất bại. Vui lòng thử lại.');
       }
     } catch (e) {
-      // Xử lý lỗi và hiển thị thông báo
       final errorMessage = e.toString();
       setSubmitError(errorMessage);
       
-      // Hiển thị snackbar chuyên nghiệp với icon và action
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

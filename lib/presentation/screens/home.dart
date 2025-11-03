@@ -18,12 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime _selectedDate = DateTime.now();
   final NoteRepository _noteRepository = NoteRepository();
 
-  // Dates có notes - sẽ được load từ Firebase
   List<DateTime> _notesDates = [];
   bool _isLoadingDates = true;
 
-  // Key để force rebuild HorizontalWeekView khi cần refresh notes
   Key _weekViewKey = UniqueKey();
+  int _refreshCounter = 0;
 
   @override
   void initState() {
@@ -41,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
       // Lấy userId từ Firebase Auth - BẮT BUỘC phải có (kể cả anonymous)
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
-        // Không có user, không load notes
         if (mounted) {
           setState(() {
             _notesDates = [];
@@ -83,7 +81,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Xử lý khi tạo note mới
   Future<void> _handleNewNote() async {
-    // Hiển thị date picker để chọn ngày ghi note
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -106,17 +103,14 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
 
-    // Nếu người dùng hủy, không làm gì
     if (pickedDate == null) return;
 
-    // Chuẩn hóa ngày về 00:00:00 để đảm bảo filter chính xác
     final normalizedDate = DateTime(
       pickedDate.year,
       pickedDate.month,
       pickedDate.day,
     );
 
-    // Chuyển sang màn hình tạo note với ngày đã chọn
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => NoteEditorScreen(
@@ -125,30 +119,27 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
 
-    // Nếu note được tạo/cập nhật thành công, refresh dates và notes
     if (result == true && mounted) {
       await _loadNotesDates();
-      // Force rebuild HorizontalWeekView để refresh Notecards
       setState(() {
         _weekViewKey = UniqueKey();
+        _refreshCounter++;
       });
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      drawer: const SidebarDrawer(), // Thêm drawer vào Scaffold
+      drawer: const SidebarDrawer(),
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
         toolbarHeight: 75,
         leadingWidth: 100,
-        backgroundColor: Colors.white, // Keep AppBar stable color when scrolling
+        backgroundColor: Colors.white,
         leading: Padding (
           padding: const EdgeInsets.only(left: 20.0, top: 20), 
           child: Row (
@@ -184,6 +175,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           selectedDate: _selectedDate,
                           onDateSelected: _onDateSelected,
                           notesDates: _notesDates,
+                          refreshCounter: _refreshCounter,
+                          onRefresh: () async {
+                            await _loadNotesDates();
+                            setState(() {
+                              _refreshCounter++;
+                            });
+                          },
                         ),
                 ),
           ],

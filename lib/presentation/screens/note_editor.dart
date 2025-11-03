@@ -119,17 +119,26 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
       if (widget.noteId != null) {
         final existingNote = await _noteRepository.getNoteById(widget.noteId!);
         if (existingNote != null) {
-          final updatedNote = existingNote.copyWith(
+          final updatedNote = NoteModel(
+            id: existingNote.id,
             title: title.isEmpty ? 'Untitled' : title,
             content: plainText,
             deltaContent: deltaJson,
             userId: userId,
+            colorValue: _selectedColorValue,
+            createdAt: existingNote.createdAt,
             updatedAt: DateTime.now(),
+            isDeleted: existingNote.isDeleted,
           );
+          
           await _noteRepository.updateNote(widget.noteId!, updatedNote);
         }
       } else {
-        final createdAt = widget.selectedDate ?? DateTime.now();
+        final selectedDate = widget.selectedDate;
+        final createdAt = selectedDate != null
+            ? DateTime(selectedDate.year, selectedDate.month, selectedDate.day)
+            : DateTime.now();
+        
         final newNote = NoteModel.create(
           title: title.isEmpty ? 'Untitled' : title,
           content: plainText,
@@ -349,7 +358,6 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      // Text formatting group
                       _buildToolbarButton(
                         icon: Icons.format_bold,
                         tooltip: 'Đậm',

@@ -2,9 +2,7 @@
 import 'package:daily_tracker/shared/widgets/MailIcon.dart';
 import 'package:daily_tracker/shared/widgets/MenuIcon.dart';
 import 'package:daily_tracker/shared/widgets/SettingIcon.dart';
-import 'package:daily_tracker/shared/widgets/SearchBar.dart';
 import 'package:daily_tracker/shared/widgets/NoteCards.dart';
-import 'package:daily_tracker/shared/widgets/SidebarDrawer.dart';
 import 'package:daily_tracker/shared/widgets/HorizontalWeekView.dart';
 import 'NewNote.dart';
 import 'social_login_buttons.dart';
@@ -14,7 +12,6 @@ class CommonWidgets {
   MailIconButton get mailIconButton => MailIconButton();
   SettingIconButton get settingIconButton => SettingIconButton();
   NewNote get newNote => NewNote();
-  // Searchbar get searchBar => Searchbar();
   Notecards get noteCards => Notecards();
   AppleCircle get appleCircle => AppleCircle();
   TwitterCircle get twitterCircle => TwitterCircle();

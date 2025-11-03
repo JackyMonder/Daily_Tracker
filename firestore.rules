@@ -1,13 +1,65 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Cho phép đọc và ghi cho tất cả documents
-    // ⚠️ CẢNH BÁO: Rules này cho phép truy cập công khai - CHỈ DÙNG CHO DEVELOPMENT
-    // Cho production, bạn cần thêm authentication rules
     
+    // Helper function để kiểm tra user đã đăng nhập
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function để kiểm tra user có phải chủ sở hữu không
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Users collection: Chỉ user mới có thể đọc/ghi profile của chính họ
+    match /users/{userId} {
+      // Cho phép đọc nếu là chủ sở hữu
+      allow read: if isOwner(userId);
+      
+      // Cho phép tạo mới nếu userId trùng với auth.uid
+      allow create: if isOwner(userId) 
+                     && request.resource.data.keys().hasAll(['name', 'email', 'createdAt', 'updatedAt'])
+                     && request.resource.data.id == userId
+                     && !request.resource.data.keys().hasAny(['password']);
+      
+      // Cho phép cập nhật nếu là chủ sở hữu
+      allow update: if isOwner(userId)
+                     && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['id'])
+                     && !request.resource.data.keys().hasAny(['password']);
+      
+      // Cho phép xóa nếu là chủ sở hữu
+      allow delete: if isOwner(userId);
+    }
+    
+    // Notes collection: User chỉ có thể đọc/ghi notes của chính họ
+    match /notes/{noteId} {
+      // Cho phép đọc nếu userId trong note trùng với auth.uid
+      allow read: if isAuthenticated() 
+                   && (resource == null || resource.data.userId == request.auth.uid);
+      
+      // Cho phép tạo mới nếu userId trùng với auth.uid
+      allow create: if isAuthenticated()
+                     && request.resource.data.userId == request.auth.uid
+                     && request.resource.data.keys().hasAll(['title', 'content', 'createdAt', 'updatedAt', 'isDeleted'])
+                     && request.resource.data.title is string
+                     && request.resource.data.title.size() > 0
+                     && request.resource.data.title.size() <= 500
+                     && request.resource.data.isDeleted is bool;
+      
+      // Cho phép cập nhật nếu là chủ sở hữu của note
+      allow update: if isAuthenticated()
+                     && resource.data.userId == request.auth.uid
+                     && request.resource.data.userId == request.auth.uid;
+      
+      // Cho phép xóa nếu là chủ sở hữu của note
+      allow delete: if isAuthenticated() 
+                     && resource.data.userId == request.auth.uid;
+    }
+    
+    // Mặc định: Không cho phép truy cập các collection khác
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
   }
 }
-

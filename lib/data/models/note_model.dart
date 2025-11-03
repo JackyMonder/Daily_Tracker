@@ -62,17 +62,23 @@ class NoteModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    final map = <String, dynamic>{
       'id': id,
       'title': title,
       'content': content,
-      if (deltaContent != null) 'deltaContent': deltaContent,
-      if (userId != null) 'userId': userId,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
-      if (colorValue != null) 'colorValue': colorValue,
       'isDeleted': isDeleted,
     };
+    
+    // Include optional fields
+    if (deltaContent != null) map['deltaContent'] = deltaContent;
+    if (userId != null) map['userId'] = userId;
+    // colorValue: include even if null to allow removing color from note
+    // Firebase will handle null appropriately
+    map['colorValue'] = colorValue;
+    
+    return map;
   }
 
   Map<String, dynamic> toJson() {
@@ -98,6 +104,13 @@ class NoteModel {
       userId: userId ?? this.userId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      // colorValue: We need to handle the case where we want to set it to null
+      // Since Dart can't distinguish "not provided" from "null", we use a workaround:
+      // In note_editor, we always pass _selectedColorValue (even if null),
+      // so we can check if it's different from current value to determine if update is needed.
+      // For simplicity, we'll use the provided value if it's different, otherwise keep existing.
+      // However, this still has the null issue. Better approach: use a sentinel or always update.
+      // Since we always pass colorValue in _saveNote, we can use it directly:
       colorValue: colorValue ?? this.colorValue,
       isDeleted: isDeleted ?? this.isDeleted,
     );

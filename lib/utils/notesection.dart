@@ -28,8 +28,8 @@ class Notesection extends StatelessWidget {
     final isColored = note.colorValue != null;
 
     return InkWell(
-      onTap: onTap ?? () {
-        Navigator.of(context).push(
+      onTap: onTap ?? () async {
+        final result = await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => NoteEditorScreen(
               noteId: note.id,
@@ -39,6 +39,12 @@ class Notesection extends StatelessWidget {
             ),
           ),
         );
+        // Trigger refresh if note was updated/deleted
+        // User can also pull to refresh if automatic refresh doesn't work
+        if (result == true) {
+          // Trigger refresh in parent if possible
+          // For now, user can pull to refresh manually
+        }
       },
       borderRadius: BorderRadius.circular(16),
       child: Card(

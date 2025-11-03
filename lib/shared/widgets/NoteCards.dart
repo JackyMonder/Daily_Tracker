@@ -23,6 +23,7 @@ class _NotecardsState extends State<Notecards> {
   List<NoteModel> _notes = [];
   bool _isLoading = true;
   String? _error;
+  DateTime? _lastRefreshTime;
 
   @override
   void initState() {
@@ -33,10 +34,14 @@ class _NotecardsState extends State<Notecards> {
   @override
   void didUpdateWidget(Notecards oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.selectedDate != widget.selectedDate) {
+    // Reload notes if selectedDate changes OR if widget key changes (which means parent was rebuilt)
+    if (oldWidget.selectedDate != widget.selectedDate || oldWidget.key != widget.key) {
       _loadNotes();
     }
   }
+
+  // Removed didChangeDependencies auto-refresh to avoid excessive calls
+  // User can manually pull to refresh instead
 
   Future<void> _loadNotes() async {
     setState(() {
@@ -66,6 +71,7 @@ class _NotecardsState extends State<Notecards> {
         setState(() {
           _notes = notes;
           _isLoading = false;
+          _lastRefreshTime = DateTime.now();
         });
       }
     } catch (e) {

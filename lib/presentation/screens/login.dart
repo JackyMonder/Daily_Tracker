@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../state/login_state.dart';
 import '../../shared/widgets/rounded_field.dart';
 import '../../shared/widgets/gradient_button.dart';
 import '../../shared/widgets/social_login_buttons.dart';
 import '../../utils/form_validators.dart';
-import '../../shared/widgets/index.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 

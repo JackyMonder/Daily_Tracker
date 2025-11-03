@@ -17,12 +17,16 @@ class HorizontalWeekView extends StatefulWidget {
   final DateTime? selectedDate;
   final Function(DateTime)? onDateSelected;
   final List<DateTime>? notesDates;
+  final int? refreshCounter;
+  final Future<void> Function()? onRefresh;
 
   const HorizontalWeekView({
     super.key,
     this.selectedDate,
     this.onDateSelected,
     this.notesDates,
+    this.refreshCounter,
+    this.onRefresh,
   });
 
   @override
@@ -71,12 +75,11 @@ class _HorizontalWeekViewState extends State<HorizontalWeekView>
           child: PageView.builder(
             controller: _controller.pageController,
             onPageChanged: (page) => _controller.onPageChanged(page, _onStateChanged),
-            itemCount: 1000, // Đặt số lượng page lớn để có thể swipe nhiều
+            itemCount: 1000, 
             itemBuilder: (context, index) {
               return WeekViewPage(
                 daysInWeek: _state.daysInWeek,
                 selectedDate: _state.currentDaySelected,
-                // Không còn chức năng chọn ngày
                 onDateSelected: null,
               );
             },
@@ -85,8 +88,13 @@ class _HorizontalWeekViewState extends State<HorizontalWeekView>
         SizedBox(height: 20),
         Expanded(
           child: NotesOnDate(
+            key: ValueKey(_state.currentDaySelected.toIso8601String() + 
+                (widget.notesDates?.length.toString() ?? '0') + 
+                (widget.refreshCounter?.toString() ?? '0')),
             date: _state.currentDaySelected,
             notesDates: widget.notesDates,
+            refreshCounter: widget.refreshCounter,
+            onRefresh: widget.onRefresh,
           ),
         ),
       ],
