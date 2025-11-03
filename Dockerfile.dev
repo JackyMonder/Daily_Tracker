@@ -1,0 +1,26 @@
+# Dev container for Flutter Web
+FROM ghcr.io/cirruslabs/flutter:stable
+
+WORKDIR /app
+
+# Enable web support
+RUN flutter config --enable-web
+
+# Pre-cache Flutter
+RUN flutter precache --web
+
+# Faster incremental builds: copy pubspec first
+COPY pubspec.yaml pubspec.yaml
+RUN flutter pub get || true
+
+# Bring the rest of the source
+COPY . .
+
+# Ensure deps are up to date (no-op if already cached)
+RUN flutter pub get
+
+EXPOSE 8080
+
+# Default command starts a web server on 0.0.0.0:8080
+CMD ["bash", "-lc", "flutter run -d web-server --web-port 8080 --web-hostname 0.0.0.0"]
+

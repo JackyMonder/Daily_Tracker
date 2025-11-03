@@ -1,0 +1,43 @@
+# Build Android APK for Flutter using Docker
+# Lưu ý: dùng image có Android SDK tích hợp
+FROM ghcr.io/cirruslabs/flutter:stable-android
+
+WORKDIR /app
+
+# Chuẩn bị Flutter
+RUN flutter config --enable-web || true
+RUN flutter doctor -v || true
+
+# Tối ưu cache
+COPY pubspec.yaml pubspec.yaml
+RUN flutter pub get || true
+
+# Copy toàn bộ dự án (bao gồm android/)
+COPY . .
+RUN flutter pub get
+
+# Tuỳ chọn: thiết lập keystore để ký release (nếu cung cấp)
+# ARG KEYSTORE_PATH=keystore.jks
+# ARG KEYSTORE_PASSWORD=changeit
+# ARG KEY_ALIAS=upload
+# ARG KEY_PASSWORD=changeit
+# COPY ${KEYSTORE_PATH} /app/android/app/keystore.jks
+
+# Build APK (release không ký, để cài nội bộ dùng debug hoặc profile)
+# Dùng biến môi trường TARGETS để chọn ABI: "android-arm,android-arm64,android-x64"
+ARG TARGETS="android-arm,android-arm64"
+ENV TARGETS=${TARGETS}
+
+RUN flutter build apk \
+  --target-platform=${TARGETS} \
+  --release \
+  --no-tree-shake-icons
+
+# Xuất artifact sang /out để dễ copy ra ngoài bằng volume
+RUN mkdir -p /out && \
+  cp -v build/app/outputs/flutter-apk/app-release.apk /out/ || true && \
+  # Nếu cần debug APK để cài nhanh trên thiết bị
+  (test -f build/app/outputs/flutter-apk/app-debug.apk && cp -v build/app/outputs/flutter-apk/app-debug.apk /out/ || true)
+
+CMD ["bash", "-lc", "ls -lah /out && echo 'APK đã được xuất ra /out' && sleep 2"]
+

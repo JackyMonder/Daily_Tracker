@@ -1,0 +1,37 @@
+# Flutter & Dart
+.build/
+.dart_tool/
+.packages
+pubspec.lock
+.generated/
+**/build/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.metadata
+**/.idea
+**/.vscode
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+.gitmodules
+
+# Logs
+*.log
+
+# Node (if any web assets)
+node_modules/
+
+# Android/iOS (mặc định: giữ lại android/ để có thể build APK)
+# Nếu chỉ build web và muốn context nhẹ hơn, có thể bật lại ignore này.
+# ios/ vẫn ignore vì không dùng trong dự án này trên Windows
+ios/
+
+# Misc
+coverage/
+.cache/
+
