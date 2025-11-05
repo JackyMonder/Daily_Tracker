@@ -236,10 +236,7 @@ class AuthService {
       
       if (e.code == 'sign_in_failed' && e.message != null && e.message!.contains('10')) {
         // ApiException 10 = DEVELOPER_ERROR
-        throw 'Lỗi cấu hình Google Sign In. Vui lòng:\n'
-              '1. Thêm SHA-1 fingerprint vào Firebase Console\n'
-              '2. Tải lại google-services.json\n'
-              '3. Đảm bảo Google Sign-In đã được bật trong Firebase Authentication\n'
+        throw 'Lỗi cấu hình Google Sign In.'
               'Chi tiết: ${e.message}';
       }
       
@@ -291,6 +288,17 @@ class AuthService {
       await _authPreferences.setUserLoggedOut(true);
     } catch (e) {
       throw 'Lỗi khi đăng xuất: ${e.toString()}';
+    }
+  }
+
+  /// Gửi email đặt lại mật khẩu (Forgot Password)
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email.trim());
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthException(e);
+    } catch (e) {
+      throw 'Đã xảy ra lỗi: ${e.toString()}';
     }
   }
 

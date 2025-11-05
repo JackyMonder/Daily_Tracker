@@ -139,29 +139,23 @@ class LoginState extends ChangeNotifier {
     notifyListeners();
 
     try {
-      print('LoginState: Starting Google login...');
       final credential = await _authService.signInWithGoogle(clientId: clientId);
       
       // Navigate nếu đăng nhập thành công
       // Nếu credential == null, có thể là user đã hủy (không phải lỗi)
       if (credential != null && credential.user != null) {
-        print('LoginState: Google login successful, navigating to home...');
         if (context.mounted) {
           Navigator.of(context).pushReplacementNamed('/');
         }
       } else if (credential == null) {
-        print('LoginState: User cancelled Google login');
       } else {
         final errorMessage = 'Đăng nhập với Google thất bại. Vui lòng thử lại.';
-        print('LoginState: Google login failed - $errorMessage');
         setSubmitError(errorMessage);
         if (context.mounted) {
           _showErrorSnackBar(context, errorMessage);
         }
       }
     } catch (e) {
-      // Xử lý lỗi và hiển thị thông báo
-      print('LoginState: Error during Google login: $e');
       final errorMessage = e.toString();
       setSubmitError(errorMessage);
       if (context.mounted) {
@@ -214,6 +208,70 @@ class LoginState extends ChangeNotifier {
         ),
       ),
     );
+  }
+
+  /// Hiển thị snackbar thành công
+  void _showSuccessSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(
+              Icons.check_circle_outline,
+              color: Colors.white,
+              size: 20,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: const Color(0xFF2E7D32),
+        duration: const Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        margin: const EdgeInsets.all(16),
+      ),
+    );
+  }
+
+  /// Quên mật khẩu: gửi email đặt lại mật khẩu
+  Future<void> handleForgotPassword(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    final email = _emailController.text.trim();
+
+    if (!email.contains('@')) {
+      _showErrorSnackBar(context, 'Vui lòng nhập email hợp lệ để đặt lại mật khẩu.');
+      return;
+    }
+
+    try {
+      // Kiểm tra tài khoản có tồn tại trước khi gửi email reset
+      // final exists = await _authService.doesEmailExist(email: email);
+      // if (!exists) {
+      //   _showErrorSnackBar(context, 'Email này chưa được đăng ký. Vui lòng tạo tài khoản mới.');
+      //   return;
+      // }
+
+      await _authService.sendPasswordResetEmail(email: email);
+      if (context.mounted) {
+        _showSuccessSnackBar(
+          context,
+          'Email đặt lại mật khẩu đã được gửi.',
+        );
+      }
+    } catch (e) {
+      _showErrorSnackBar(context, e.toString());
+    }
   }
 
   @override

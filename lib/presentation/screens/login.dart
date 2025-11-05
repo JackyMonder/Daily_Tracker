@@ -4,6 +4,7 @@ import '../../shared/widgets/rounded_field.dart';
 import '../../shared/widgets/gradient_button.dart';
 import '../../shared/widgets/social_login_buttons.dart';
 import '../../utils/form_validators.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -170,7 +171,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 12),
                     Center(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _loginState.handleForgotPassword(context);
+                        },
                         child: Text(
                           'Forgot the password?',
                           style: theme.textTheme.bodyMedium?.copyWith(
@@ -198,14 +201,40 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        FacebookCircle(),
-                        SizedBox(width: 16),
-                        GoogleCircle(),
-                        SizedBox(width: 16),
-                        AppleCircle(),
-                        SizedBox(width: 16),
-                        TwitterCircle(),
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Facebook Sign-In chưa hỗ trợ.')),
+                            );
+                          },
+                          child: const FacebookCircle(),
+                        ),
+                        const SizedBox(width: 16),
+                        GestureDetector(
+                          onTap: () {
+                            _loginState.handleGoogleLogin(context, null);
+                          },
+                          child: const GoogleCircle(),
+                        ),
+                        const SizedBox(width: 16),
+                        GestureDetector(
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Apple Sign-In chưa hỗ trợ.')),
+                            );
+                          },
+                          child: const AppleCircle(),
+                        ),
+                        const SizedBox(width: 16),
+                        GestureDetector(
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Twitter/X Sign-In chưa hỗ trợ.')),
+                            );
+                          },
+                          child: const TwitterCircle(),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
